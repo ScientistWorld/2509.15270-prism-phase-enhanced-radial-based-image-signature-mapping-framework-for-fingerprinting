@@ -15,7 +15,10 @@
 
 ## Progress Log
 
-<!-- Write your progress here -->
+### [2026-05-26 23:57] - none
+- Read the paper summary and implementation details for PRISM, including the radial DFT magnitude/phase feature extraction and LDA classifier.
+- Implemented the paper's actual PRISM computation in `method/`, a method-agnostic Tiny GenImage loader in `data/`, and reusable evaluation code in `eval/`.
+- Added scripts, environment setup, scoring references, and documentation needed to submit the first offline reproduction job.
 
 ## Stop Justification
-- Completed at milestone `none`.
+- Not stopped. The first reproduction job is being prepared.

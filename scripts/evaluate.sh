@@ -20,11 +20,12 @@
 #
 # Called from run.sh after training, or independently.
 
-set -e
+set -euo pipefail
 
 cd /home/user
 
 mkdir -p scoring
 
-# TODO: implement evaluation using code in eval/
-# Must write scoring/scores.json at the end
+PREDICTIONS="${1:-outputs/prism_predictions.csv}"
+
+python eval/score_predictions.py "$PREDICTIONS" --output scoring/scores.json

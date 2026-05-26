@@ -2,36 +2,32 @@
 
 ## What Works
 
-<!-- What has been successfully reproduced so far. -->
+- Paper analysis is complete enough to implement the core PRISM experiment.
+- The PRISM feature extractor implements 64 radial bins over centered 2D FFT magnitude and phase for each RGB channel, producing the paper's 384-dimensional representation.
+- The method pipeline trains an LDA classifier on extracted features and writes prediction artifacts for both source attribution and real-vs-generated detection.
+- Evaluation is separated from the method and scores prediction CSV artifacts without importing from `method/`.
 
 ## Results
 
-<!-- Reproduced numbers compared to the paper's reported numbers. -->
+- No reproduced metrics yet. The first compute job will run PRISM on Tiny GenImage and write `scoring/scores.json`.
+- Paper reference numbers recorded in `scoring/reference.json`:
+  - Tiny GenImage attribution: PRISM accuracy 88.47, weighted F1 88.25.
+  - Tiny GenImage binary detection: PRISM accuracy 95.06, weighted F1 95.05.
 
 ## Remaining
 
-<!-- What still needs to be done to reach higher milestones. -->
+- Finish the Tiny GenImage download.
+- Submit the first offline run through `scripts/run.sh`.
+- Inspect `scoring/scores.json` after the job and compare against `scoring/reference.json`.
+- If the run is valid and the method separates generators substantially above trivial baselines, update the milestone to `core_claim`; otherwise diagnose and resubmit.
 
 ## Issues
 
-<!-- Blockers, bugs, or difficulties encountered. -->
+- The paper's PRISM-36K download link was not reachable from this environment, so the reproduction targets the paper's public Tiny GenImage evaluation instead.
+- Tiny GenImage is large enough that the initial setup depends on completing the Hugging Face dataset download before submitting the offline job.
 
 ## Deviations from Paper
 
-<!-- Do not edit this section unless you deviated from the paper's original setup.
-     For each deviation, document: what the paper used, what you substituted, and why.
-
-     ACCEPTABLE deviations (data/resource/scale substitutions — milestones still valid):
-       - Replaced a proprietary dataset with a public one
-       - Used a smaller model of the same architecture
-       - Scaled down training (fewer epochs, smaller batch)
-       - Used a different library for the same algorithm
-
-     UNACCEPTABLE deviations (algorithm substitutions — milestones above 'none' are void):
-       - Replaced the paper's algorithm with a fundamentally different one
-       - Wrote a generic model trained to approximate the method's outputs
-         instead of implementing the method's computational steps
-
-     The test: could someone reading your code identify which algorithm from
-     the paper you implemented? If not, you replaced the method. -->
-
+- Dataset: the paper's PRISM-36K link was unavailable, so the runnable core experiment uses the paper's Tiny GenImage benchmark via the public Hugging Face mirror `TheKernel01/Tiny-GenImage`.
+- Label set: the public Tiny GenImage mirror includes an SD14 label in addition to the generators listed in the paper's summarized Tiny GenImage table. The first run keeps the mirror's labels intact and documents this as a dataset-source deviation, not an algorithm change.
+- Algorithm: no method substitution. The reproduction implements PRISM's radial Fourier magnitude and phase features followed by LDA.

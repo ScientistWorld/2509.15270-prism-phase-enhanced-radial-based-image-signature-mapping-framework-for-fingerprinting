@@ -9,22 +9,56 @@
 #
 # Update the storage estimate below as you add downloads.
 #
-# Estimated total download size: TODO GB
-# Estimated disk usage after extraction: TODO GB
+# Estimated total download size: 8.36 GB
+# Estimated disk usage after download: 8.36 GB
 #
-# During reproduction, prefer downloading to shared directories
-# (shared/datasets/, shared/models/) so other papers can reuse them.
-# You do not need to run this script during reproduction — it exists
-# for future portability. Write it to download to workspace-local
-# paths (data/, checkpoints/) instead of the shared directories
-# so a future user with just the workspace can run this script and get everything they need.
+# This script downloads to workspace-local paths so a fresh clone can
+# reproduce the benchmark without relying on machine-specific caches.
 
-set -e
+set -euo pipefail
 
-cd "$(dirname "$0")"
+cd /home/user
 
-# TODO: implement downloads
-# Examples:
-#   wget -nc https://example.com/dataset.tar.gz -P data/
-#   python -c "from huggingface_hub import snapshot_download; snapshot_download('model/name', local_dir='checkpoints/')"
-#   huggingface-cli download Qwen/Qwen3-1.7B --local-dir /checkpoints/Qwen3-1.7B
+mkdir -p data/downloads/tiny-genimage/data
+
+BASE_URL="https://huggingface.co/datasets/TheKernel01/Tiny-GenImage/resolve/main"
+
+download_one() {
+  local rel="$1"
+  local out="data/downloads/tiny-genimage/$rel"
+  local tmp="${out}.part"
+  mkdir -p "$(dirname "$out")"
+  if [ -e "$out" ]; then
+    return 0
+  fi
+  curl -L -C - "$BASE_URL/$rel" -o "$tmp"
+  mv "$tmp" "$out"
+}
+
+[ -e data/downloads/tiny-genimage/README.md ] || \
+  download_one README.md
+
+download_many() {
+  local running=0
+  for rel in "$@"; do
+    download_one "$rel" &
+    running=$((running + 1))
+    if [ "$running" -ge 4 ]; then
+      wait -n
+      running=$((running - 1))
+    fi
+  done
+  wait
+}
+
+files=()
+
+for i in $(seq -w 0 13); do
+  files+=("data/train-000${i}-of-00014.parquet")
+done
+
+for i in $(seq -w 0 3); do
+  files+=("data/validation-0000${i}-of-00004.parquet")
+done
+
+download_many "${files[@]}"

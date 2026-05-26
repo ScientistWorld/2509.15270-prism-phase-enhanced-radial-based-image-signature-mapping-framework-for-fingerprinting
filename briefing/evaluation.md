@@ -1,15 +1,9 @@
-# Evaluation
+# Evaluation Protocol
 
-How success is measured. Describe only the metrics, targets, and evaluation procedure — do NOT describe the paper's method or how they achieved these results. Think of this as a general evaluation protocal for other scientists trying to solve the same problem, where they should not see this paper's solution.
+Evaluation consumes a prediction CSV written by a method run. The CSV contains one row per validation image with experiment name, method name, sample id, true label, and predicted label.
 
-## Metrics
+Metrics are weighted accuracy, precision, recall, and F1, reported as percentages. The reusable evaluator in `eval/` reads only prediction artifacts and writes `scoring/scores.json`.
 
-<!-- What metrics are used? How are they computed? What does higher/lower mean? -->
+The reproduced benchmark uses Tiny GenImage's published training and validation split: 28,000 training images and 7,000 validation images. The attribution experiment predicts source labels. The binary experiment predicts real versus fake labels.
 
-## Baselines and Targets
-
-<!-- What performance levels exist as reference points? Include the paper's reported numbers as targets, and any standard baselines. A scientist agent should know what "good" looks like. -->
-
-## Evaluation Protocol
-
-<!-- How should evaluation be run? What data split, what conditions? Any important details about how to compare fairly (e.g., fixed seeds, specific test sets, averaging over runs). -->
+The main constraint metric is feature dimensionality. The paper emphasizes that radial reduction makes the frequency representation compact and practical, so improvements should not simply replace the compact representation with a much larger image descriptor.

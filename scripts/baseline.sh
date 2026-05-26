@@ -13,8 +13,10 @@
 # Usage:
 #   bash scripts/baseline.sh <name>
 
-set -e
+set -euo pipefail
 
 cd /home/user
 
-# TODO: run baseline
+mkdir -p outputs
+python baseline/majority.py "$@"
+bash scripts/evaluate.sh outputs/baseline_predictions.csv

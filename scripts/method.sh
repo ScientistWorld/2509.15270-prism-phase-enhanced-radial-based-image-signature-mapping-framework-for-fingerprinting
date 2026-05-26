@@ -6,9 +6,12 @@
 # Usage:
 #   bash scripts/method.sh
 
-set -e
+set -euo pipefail
 
 cd /home/user
 
-# TODO: run the paper's method
-# TODO: call scripts/evaluate.sh to score
+mkdir -p outputs
+
+python method/run_prism.py "$@"
+
+bash scripts/evaluate.sh outputs/prism_predictions.csv
