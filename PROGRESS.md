@@ -5,6 +5,7 @@
 - Paper analysis is complete enough to implement the core PRISM experiment.
 - The PRISM feature extractor implements 64 radial bins over centered 2D FFT magnitude and phase for each RGB channel, producing the paper's 384-dimensional representation.
 - The method pipeline trains an LDA classifier on extracted features and writes prediction artifacts for both source attribution and real-vs-generated detection.
+- The method runner now extracts PRISM features once and reuses the same representation for attribution and binary LDA classifiers.
 - Evaluation is separated from the method and scores prediction CSV artifacts without importing from `method/`.
 
 ## Results
@@ -25,6 +26,7 @@
 
 - The paper's PRISM-36K download link was not reachable from this environment, so the reproduction targets the paper's public Tiny GenImage evaluation instead.
 - Tiny GenImage is large enough that the initial setup depends on completing the Hugging Face dataset download before submitting the offline job.
+- The first CPU job was cancelled after 20 minutes because it was healthy but too slow for the one-hour CPU job limit when attribution and binary extraction were duplicated. The runner has been refactored to avoid that duplicated FFT pass.
 
 ## Deviations from Paper
 

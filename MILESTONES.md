@@ -20,5 +20,9 @@
 - Implemented the paper's actual PRISM computation in `method/`, a method-agnostic Tiny GenImage loader in `data/`, and reusable evaluation code in `eval/`.
 - Added scripts, environment setup, scoring references, and documentation needed to submit the first offline reproduction job.
 
+### [2026-05-27 00:22] - none
+- Cancelled the first CPU job after logs showed it was progressing correctly but would likely exceed the one-hour CPU-job limit because it extracted PRISM features separately for attribution and binary evaluation.
+- Refactored the method runner to extract PRISM features once and reuse them for both LDA evaluations.
+
 ## Stop Justification
 - Not stopped. The first reproduction job is being prepared.

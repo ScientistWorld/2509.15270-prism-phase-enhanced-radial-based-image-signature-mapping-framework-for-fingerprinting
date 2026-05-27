@@ -35,7 +35,7 @@ def _select_record(label: int, counts: dict[int, int], limit: int | None) -> boo
 def extract_split(
     data_root: Path,
     split: str,
-    task: str,
+    selection_task: str,
     max_per_class: int | None,
     n_bins: int,
 ) -> tuple[np.ndarray, np.ndarray, list[int]]:
@@ -44,34 +44,35 @@ def extract_split(
     labels: list[int] = []
     indices: list[int] = []
 
-    desc = f"extract {split} {task}"
+    desc = f"extract {split} {selection_task}"
     for record in tqdm(iter_records(data_root, split), desc=desc, unit="img"):
-        label = record.binary_label if task == "binary" else record.generator_label
-        if not _select_record(label, counts, max_per_class):
+        selection_label = record.binary_label if selection_task == "binary" else record.generator_label
+        if not _select_record(selection_label, counts, max_per_class):
             continue
         features.append(extract_prism_features(record.image, n_bins=n_bins))
-        labels.append(label)
+        labels.append(record.generator_label)
         indices.append(record.index)
     if not features:
-        raise RuntimeError(f"No records selected for split={split} task={task}")
+        raise RuntimeError(f"No records selected for split={split} task={selection_task}")
     return np.vstack(features), np.asarray(labels, dtype=np.int64), indices
 
 
-def run_task(args: argparse.Namespace, task: str, experiment: str) -> list[dict[str, object]]:
-    train_x, train_y, _ = extract_split(
-        args.data_root, "train", task, args.max_train_per_class, args.n_bins
-    )
-    test_x, test_y, test_indices = extract_split(
-        args.data_root, "validation", task, args.max_test_per_class, args.n_bins
-    )
-
+def run_task(
+    train_x: np.ndarray,
+    train_y: np.ndarray,
+    test_x: np.ndarray,
+    test_y: np.ndarray,
+    test_indices: list[int],
+    task: str,
+    experiment: str,
+) -> list[dict[str, object]]:
     scaler = StandardScaler()
-    train_x = scaler.fit_transform(train_x)
-    test_x = scaler.transform(test_x)
+    scaled_train_x = scaler.fit_transform(train_x)
+    scaled_test_x = scaler.transform(test_x)
 
     lda = LinearDiscriminantAnalysis(solver="svd")
-    lda.fit(train_x, train_y)
-    pred_y = lda.predict(test_x)
+    lda.fit(scaled_train_x, train_y)
+    pred_y = lda.predict(scaled_test_x)
 
     names = BINARY_NAMES if task == "binary" else GENERATOR_NAMES
     rows: list[dict[str, object]] = []
@@ -102,11 +103,42 @@ def main() -> None:
     args = parser.parse_args()
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
+
+    # PRISM uses the same Fourier feature representation for both attribution
+    # and binary detection, so extract it once and reuse it for each LDA task.
+    selection_task = "binary" if args.task == "binary" else "attribution"
+    train_x, train_generator_y, _ = extract_split(
+        args.data_root, "train", selection_task, args.max_train_per_class, args.n_bins
+    )
+    test_x, test_generator_y, test_indices = extract_split(
+        args.data_root, "validation", selection_task, args.max_test_per_class, args.n_bins
+    )
+
     rows: list[dict[str, object]] = []
     if args.task in {"attribution", "both"}:
-        rows.extend(run_task(args, "attribution", "genimage_tiny_attribution"))
+        rows.extend(
+            run_task(
+                train_x,
+                train_generator_y,
+                test_x,
+                test_generator_y,
+                test_indices,
+                "attribution",
+                "genimage_tiny_attribution",
+            )
+        )
     if args.task in {"binary", "both"}:
-        rows.extend(run_task(args, "binary", "genimage_tiny_binary"))
+        rows.extend(
+            run_task(
+                train_x,
+                (train_generator_y > 0).astype(np.int64),
+                test_x,
+                (test_generator_y > 0).astype(np.int64),
+                test_indices,
+                "binary",
+                "genimage_tiny_binary",
+            )
+        )
 
     fieldnames = [
         "experiment",
