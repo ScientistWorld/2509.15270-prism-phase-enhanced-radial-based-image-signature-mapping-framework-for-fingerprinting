@@ -65,6 +65,8 @@ def run_task(
     test_indices: list[int],
     task: str,
     experiment: str,
+    method: str,
+    feature_count: int,
 ) -> list[dict[str, object]]:
     scaler = StandardScaler()
     scaled_train_x = scaler.fit_transform(train_x)
@@ -80,16 +82,38 @@ def run_task(
         rows.append(
             {
                 "experiment": experiment,
-                "method": "prism",
+                "method": method,
                 "split": "validation",
                 "sample_id": f"validation/{idx}",
                 "y_true": int(true_label),
                 "y_pred": int(pred_label),
                 "y_true_name": names.get(int(true_label), str(true_label)),
                 "y_pred_name": names.get(int(pred_label), str(pred_label)),
+                "feature_count": feature_count,
             }
         )
     return rows
+
+
+def select_feature_mode(features: np.ndarray, mode: str, n_bins: int) -> np.ndarray:
+    """Select full, magnitude-only, or phase-only PRISM descriptors.
+
+    The PRISM vector is concatenated by channel as
+    [R magnitude, R phase, G magnitude, G phase, B magnitude, B phase].
+    """
+    if mode == "both":
+        return features
+
+    chunks: list[np.ndarray] = []
+    for channel in range(3):
+        start = channel * 2 * n_bins
+        if mode == "magnitude":
+            chunks.append(features[:, start : start + n_bins])
+        elif mode == "phase":
+            chunks.append(features[:, start + n_bins : start + 2 * n_bins])
+        else:
+            raise ValueError(f"Unknown feature mode: {mode}")
+    return np.concatenate(chunks, axis=1)
 
 
 def main() -> None:
@@ -116,17 +140,26 @@ def main() -> None:
 
     rows: list[dict[str, object]] = []
     if args.task in {"attribution", "both"}:
-        rows.extend(
-            run_task(
-                train_x,
-                train_generator_y,
-                test_x,
-                test_generator_y,
-                test_indices,
-                "attribution",
-                "genimage_tiny_attribution",
+        for mode, method_name in [
+            ("both", "prism"),
+            ("magnitude", "prism_magnitude_only"),
+            ("phase", "prism_phase_only"),
+        ]:
+            mode_train_x = select_feature_mode(train_x, mode, args.n_bins)
+            mode_test_x = select_feature_mode(test_x, mode, args.n_bins)
+            rows.extend(
+                run_task(
+                    mode_train_x,
+                    train_generator_y,
+                    mode_test_x,
+                    test_generator_y,
+                    test_indices,
+                    "attribution",
+                    "genimage_tiny_attribution",
+                    method_name,
+                    mode_train_x.shape[1],
+                )
             )
-        )
     if args.task in {"binary", "both"}:
         rows.extend(
             run_task(
@@ -137,6 +170,8 @@ def main() -> None:
                 test_indices,
                 "binary",
                 "genimage_tiny_binary",
+                "prism",
+                train_x.shape[1],
             )
         )
 
@@ -149,6 +184,7 @@ def main() -> None:
         "y_pred",
         "y_true_name",
         "y_pred_name",
+        "feature_count",
     ]
     with args.output.open("w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
@@ -158,6 +194,11 @@ def main() -> None:
     meta = {
         "method": "prism",
         "feature_count": 3 * 2 * args.n_bins,
+        "attribution_variants": {
+            "prism": 3 * 2 * args.n_bins,
+            "prism_magnitude_only": 3 * args.n_bins,
+            "prism_phase_only": 3 * args.n_bins,
+        },
         "n_bins": args.n_bins,
         "predictions": str(args.output),
     }

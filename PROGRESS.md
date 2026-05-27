@@ -6,6 +6,7 @@
 - The PRISM feature extractor implements 64 radial bins over centered 2D FFT magnitude and phase for each RGB channel, producing the paper's 384-dimensional representation.
 - The method pipeline trains an LDA classifier on extracted features and writes prediction artifacts for both source attribution and real-vs-generated detection.
 - The method runner now extracts PRISM features once and reuses the same representation for attribution and binary LDA classifiers.
+- The runner now also emits attribution ablations for magnitude-only and phase-only PRISM feature slices without rerunning FFT extraction.
 - Evaluation is separated from the method and scores prediction CSV artifacts without importing from `method/`.
 - The completed reproduction reaches `secondary_claims` on the paper's public Tiny GenImage benchmark: source attribution plus the secondary real-vs-fake detection result.
 
@@ -29,6 +30,7 @@
 
 ## Remaining
 
+- The next submitted CPU job will regenerate `outputs/prism_predictions.csv` and `scoring/scores.json` with magnitude-only and phase-only attribution ablations included.
 - Broader paper coverage remains: PRISM-36K and additional forensic/deepfake benchmarks were not reproduced.
 - A future expansion could add more public datasets and additional baselines, using the current evaluator contract.
 

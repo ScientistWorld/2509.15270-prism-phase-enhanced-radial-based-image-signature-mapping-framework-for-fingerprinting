@@ -6,6 +6,7 @@ Tests whether a system can identify the image source on Tiny GenImage under the 
 
 - **Metric**: `accuracy` and `f1_weighted` (higher is better)
 - **Constraint**: `feature_count` (lower is better for comparable accuracy)
+- **Ablation check**: compare `prism` with `prism_magnitude_only` and `prism_phase_only` when those methods are present in `scores.json`
 - **How to run**: `bash scripts/method.sh`, then inspect `scoring/scores.json`
 
 ## Secondary: genimage_tiny_binary

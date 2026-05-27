@@ -31,18 +31,24 @@ def main() -> None:
     args = parser.parse_args()
 
     groups: dict[tuple[str, str], dict[str, list[int]]] = defaultdict(
-        lambda: {"y_true": [], "y_pred": []}
+        lambda: {"y_true": [], "y_pred": [], "feature_count": []}
     )
     with args.predictions.open(newline="") as f:
         for row in csv.DictReader(f):
             key = (row["experiment"], row["method"])
             groups[key]["y_true"].append(int(row["y_true"]))
             groups[key]["y_pred"].append(int(row["y_pred"]))
+            if row.get("feature_count"):
+                groups[key]["feature_count"].append(float(row["feature_count"]))
 
     experiments: dict[str, dict[str, dict[str, dict[str, float]]]] = {}
     for (experiment, method), values in sorted(groups.items()):
         experiments.setdefault(experiment, {"results": {}})
-        experiments[experiment]["results"][method] = _metrics(values["y_true"], values["y_pred"])
+        feature_counts = values["feature_count"]
+        feature_count = feature_counts[0] if feature_counts else 384.0
+        experiments[experiment]["results"][method] = _metrics(
+            values["y_true"], values["y_pred"], feature_count=feature_count
+        )
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps({"experiments": experiments}, indent=2) + "\n")
