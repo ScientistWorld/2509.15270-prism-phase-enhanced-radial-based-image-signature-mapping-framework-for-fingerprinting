@@ -7,7 +7,7 @@
 - The method pipeline trains an LDA classifier on extracted features and writes prediction artifacts for both source attribution and real-vs-generated detection.
 - The method runner now extracts PRISM features once and reuses the same representation for attribution and binary LDA classifiers.
 - Evaluation is separated from the method and scores prediction CSV artifacts without importing from `method/`.
-- The completed reproduction reaches `core_claim` on the paper's public Tiny GenImage benchmark.
+- The completed reproduction reaches `secondary_claims` on the paper's public Tiny GenImage benchmark: source attribution plus the secondary real-vs-fake detection result.
 
 ## Results
 
@@ -19,7 +19,13 @@
   - Paper: 95.06 accuracy, 95.05 weighted F1, 384 features.
   - Reproduction: 94.31 accuracy, 94.31 weighted F1, 384 features.
 - `python validate.py --compare` passes and shows the reproduced metrics are within about one percentage point of the paper's reported values.
-- Current milestone: `core_claim`.
+- Current milestone: `secondary_claims`.
+
+## Audit
+
+- Implementation fidelity: passed. The method code contains the paper's PRISM computation rather than a learned surrogate or hardcoded output.
+- Evaluation honesty: passed. The evaluator consumes `outputs/prism_predictions.csv`; `scoring/scores.json` is recomputed from 14,000 prediction rows and is not copied from the paper.
+- Deliverables: passed. Briefing, scoring targets, scripts, download script, and container setup are present. The login-node Python lacks `scikit-learn`, but the container setup log shows the package is installed in the packaged job environment where the reproduction ran.
 
 ## Remaining
 

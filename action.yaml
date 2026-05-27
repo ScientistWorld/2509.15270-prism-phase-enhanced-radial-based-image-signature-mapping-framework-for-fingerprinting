@@ -4,5 +4,5 @@
 action: done
 gpus: 0
 test: false
-milestone: core_claim
-notes: "PRISM core claim reproduced on Tiny GenImage: 88.30% attribution accuracy and 94.31% binary detection accuracy; validation passes and environment is packaged."
+milestone: secondary_claims
+notes: "Audited inherited PRISM implementation, revalidated scores, and confirmed source attribution plus secondary binary detection claims on Tiny GenImage."
