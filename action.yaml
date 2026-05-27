@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: done
-gpus: 0
+action: pending
+gpus: 1
 test: false
-milestone: secondary_claims
-notes: "Audited inherited PRISM implementation, revalidated scores, and confirmed source attribution plus secondary binary detection claims on Tiny GenImage."
+milestone: core_claim_plus
+notes: ""

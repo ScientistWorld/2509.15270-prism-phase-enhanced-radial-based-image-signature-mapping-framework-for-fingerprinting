@@ -98,7 +98,7 @@ The main constraint metric is feature dimensionality. The paper emphasizes that 
 
 # Reproduction Milestones
 
-**Current: secondary_claims**
+**Current: core_claim_plus**
 
 ## Stop Justification
-- Completed at milestone `secondary_claims`.
+- Completed at milestone `core_claim_plus`.
