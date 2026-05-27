@@ -13,8 +13,5 @@ set -euo pipefail
 
 cd /home/user
 
-if [ "${PRISM_SMOKE_TEST:-0}" = "1" ]; then
-  bash scripts/method.sh --max-train-per-class 12 --max-test-per-class 8
-else
-  bash scripts/method.sh
-fi
+bash scripts/evaluate_train.sh
+bash scripts/evaluate_test.sh
