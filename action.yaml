@@ -2,4 +2,4 @@ action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Hidden-salted disjoint 40/40 train-test split; 32 train metrics and 32 test metrics populated from real run; primary train/test gaps <=0.54 points for prism and <=1.18 points across attribution variants, with phase-only worst-class recall saturated at 0 as a weak-baseline caveat."
+notes: "Packaging audit passed: download.sh fetches Tiny-GenImage from public Hugging Face URLs into data/downloads and committed code has no shared-path dependency."
