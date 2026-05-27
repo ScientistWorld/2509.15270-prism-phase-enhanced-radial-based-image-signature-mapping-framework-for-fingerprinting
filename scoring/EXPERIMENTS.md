@@ -4,7 +4,7 @@
 
 Tests source attribution on a public benchmark containing real images and images produced by multiple generators. The experiment asks whether the system can recover the image source from image content alone on held-out validation data.
 
-The submitted method also reports magnitude-only and phase-only variants for this experiment so future agents can check whether the phase-enhanced full descriptor is doing useful work beyond magnitude alone. These are scored as comparison variants under the same prediction-artifact interface.
+The submitted baseline includes lower-information comparison variants for this experiment. They are scored under the same prediction-artifact interface so future agents can check whether a richer compact representation improves source attribution without changing the benchmark.
 
 ## genimage_tiny_binary
 

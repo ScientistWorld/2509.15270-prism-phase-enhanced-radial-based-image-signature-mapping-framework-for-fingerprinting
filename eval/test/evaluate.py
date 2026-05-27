@@ -14,13 +14,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from sklearn.metrics import (
-    accuracy_score,
-    balanced_accuracy_score,
-    f1_score,
-    precision_score,
-    recall_score,
-)
+from eval.metrics import classification_metrics
 
 
 SLICE = "test"
@@ -28,29 +22,6 @@ TRAIN_SPLIT_SEED = "tiny-genimage-visible-train-split-v2"
 TEST_SPLIT_SEED = "tiny-genimage-heldout-test-split-v2"
 TRAIN_FRACTION = 0.40
 TEST_FRACTION = 0.40
-
-
-def metric_values(y_true: list[int], y_pred: list[int], feature_count: float) -> dict[str, float]:
-    labels = sorted(set(y_true))
-    per_class_recall = recall_score(
-        y_true,
-        y_pred,
-        labels=labels,
-        average=None,
-        zero_division=0,
-    )
-    return {
-        "accuracy": 100.0 * accuracy_score(y_true, y_pred),
-        "balanced_accuracy": 100.0 * balanced_accuracy_score(y_true, y_pred),
-        "precision_weighted": 100.0
-        * precision_score(y_true, y_pred, average="weighted", zero_division=0),
-        "recall_weighted": 100.0
-        * recall_score(y_true, y_pred, average="weighted", zero_division=0),
-        "f1_weighted": 100.0 * f1_score(y_true, y_pred, average="weighted", zero_division=0),
-        "f1_macro": 100.0 * f1_score(y_true, y_pred, average="macro", zero_division=0),
-        "worst_class_recall": 100.0 * float(min(per_class_recall)) if len(per_class_recall) else 0.0,
-        "feature_count": float(feature_count),
-    }
 
 
 def read_rows(path: Path) -> list[dict[str, str]]:
@@ -158,7 +129,7 @@ def score_rows(
         feature_counts = values["feature_count"]
         feature_count = feature_counts[0] if feature_counts else 384.0
         experiments.setdefault(experiment, {"results": {}})
-        experiments[experiment]["results"][method] = metric_values(
+        experiments[experiment]["results"][method] = classification_metrics(
             [int(value) for value in values["y_true"]],
             [int(value) for value in values["y_pred"]],
             feature_count=feature_count,

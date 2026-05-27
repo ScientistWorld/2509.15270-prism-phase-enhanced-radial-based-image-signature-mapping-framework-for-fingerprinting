@@ -4,8 +4,8 @@
 
 - Paper analysis is complete enough to implement the core PRISM experiment.
 - The PRISM feature extractor implements 64 radial bins over centered 2D FFT magnitude and phase for each RGB channel, producing the paper's 384-dimensional representation.
-- The method pipeline trains an LDA classifier on extracted features and writes prediction artifacts for both source attribution and real-vs-generated detection.
-- The method runner now extracts PRISM features once and reuses the same representation for attribution and binary LDA classifiers.
+- The method pipeline trains an LDA classifier on extracted features and writes prediction artifacts for source attribution.
+- The method runner now derives real-vs-generated predictions by collapsing the source-attribution predictions into binary labels.
 - The runner now also emits attribution ablations for magnitude-only and phase-only PRISM feature slices without rerunning FFT extraction.
 - The binary Tiny GenImage output now collapses the source-attribution PRISM predictions into real/fake labels instead of training a separate binary classifier.
 - Evaluation is separated from the method and scores prediction CSV artifacts without importing from `method/`.
@@ -25,7 +25,7 @@
   - Full magnitude-plus-phase PRISM improves attribution accuracy by 1.86 percentage points over magnitude alone on this public benchmark.
 - Tiny GenImage binary detection:
   - Paper: 95.06 accuracy, 95.05 weighted F1, 384 features.
-  - Reproduction: 94.31 accuracy, 94.31 weighted F1, 384 features.
+  - Reproduction: 95.23 accuracy, 95.23 weighted F1, 384 features.
 - `python validate.py --compare` passes and shows the reproduced metrics are within about one percentage point of the paper's reported values.
 - Current milestone: `secondary_claims`.
 
@@ -47,7 +47,7 @@
 - The first CPU job was cancelled after 20 minutes because it was healthy but too slow for the one-hour CPU job limit when attribution and binary extraction were duplicated. The runner has been refactored to avoid that duplicated FFT pass.
 - The second CPU job completed successfully in the one-hour limit after sharing feature extraction across tasks.
 - The third CPU job completed successfully and added magnitude-only and phase-only ablation scores to `scoring/scores.json`.
-- Current turn prepares a CPU rerun because the binary experiment implementation was tightened to use attribution-derived real/fake predictions and the canonical score file now emits the full declared metric set.
+- Final verification regenerated the score files after tightening binary detection to use attribution-derived real/fake predictions and after extending the canonical score file to emit the full declared metric set.
 
 ## Deviations from Paper
 

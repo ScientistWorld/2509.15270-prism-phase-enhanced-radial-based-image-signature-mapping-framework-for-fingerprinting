@@ -1,5 +1,5 @@
-action: submit
+action: done
 gpus: 0
-test: true
+test: false
 milestone: secondary_claims
-notes: "CPU rerun to regenerate PRISM predictions and full scoring metrics after aligning binary detection with attribution-derived predictions."
+notes: "Final verification passed; scores and method-agnostic docs are ready for gym use."

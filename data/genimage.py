@@ -1,8 +1,7 @@
 """Dataset utilities for the Tiny GenImage benchmark.
 
 This module is intentionally method-agnostic: it only locates parquet shards
-and yields decoded images plus labels. The PRISM implementation lives in
-``method/`` and the scorer lives in ``eval/``.
+and yields decoded images plus labels.
 """
 
 from __future__ import annotations

@@ -6,8 +6,8 @@ Tests whether a system can identify the image source on Tiny GenImage under the 
 
 - **Metric**: `accuracy` and `f1_weighted` (higher is better)
 - **Constraint**: `feature_count` (lower is better for comparable accuracy)
-- **Ablation check**: compare `prism` with `prism_magnitude_only` and `prism_phase_only`; full PRISM should outperform magnitude-only, and phase-only should be substantially weaker
-- **How to run**: `bash scripts/method.sh`, then inspect `scoring/scores.json`
+- **Comparison check**: compare the main submission with any lower-information variants included in the prediction artifact; the full submission should preserve a clear accuracy advantage at a compact representation size
+- **How to run**: produce a prediction CSV and pass it to `bash scripts/evaluate.sh`
 
 ## Secondary: genimage_tiny_binary
 
@@ -15,4 +15,4 @@ Tests whether the same prediction pipeline distinguishes real images from synthe
 
 - **Metric**: `accuracy` and `f1_weighted` (higher is better)
 - **Constraint**: `feature_count` (lower is better for comparable accuracy)
-- **How to run**: `bash scripts/method.sh`, then inspect `scoring/scores.json`
+- **How to run**: produce a prediction CSV and pass it to `bash scripts/evaluate.sh`

@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-27 02:11] - secondary_claims
+- Final verification passed after score regeneration.
+- `scoring/scores.json` now includes the full declared metric set, and binary detection scores come from attribution-derived predictions.
+- Method-agnostic docs were tightened to avoid leaking the paper's implementation details to from-scratch agents.
+
 ### [2026-05-27 02:06] - secondary_claims
 - Tightened the canonical evaluator so `scoring/scores.json` reports all metrics declared in `scoring/reference.json`.
 - Updated the binary Tiny GenImage experiment to collapse the attribution model's source predictions into real/fake labels, matching the paper's no task-specific retraining claim.

@@ -9,36 +9,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from sklearn.metrics import (
-    accuracy_score,
-    balanced_accuracy_score,
-    f1_score,
-    precision_score,
-    recall_score,
-)
-
-
-def _metrics(y_true: list[int], y_pred: list[int], feature_count: float = 384.0) -> dict[str, float]:
-    labels = sorted(set(y_true))
-    per_class_recall = recall_score(
-        y_true,
-        y_pred,
-        labels=labels,
-        average=None,
-        zero_division=0,
-    )
-    return {
-        "accuracy": 100.0 * accuracy_score(y_true, y_pred),
-        "balanced_accuracy": 100.0 * balanced_accuracy_score(y_true, y_pred),
-        "precision_weighted": 100.0
-        * precision_score(y_true, y_pred, average="weighted", zero_division=0),
-        "recall_weighted": 100.0
-        * recall_score(y_true, y_pred, average="weighted", zero_division=0),
-        "f1_weighted": 100.0 * f1_score(y_true, y_pred, average="weighted", zero_division=0),
-        "f1_macro": 100.0 * f1_score(y_true, y_pred, average="macro", zero_division=0),
-        "worst_class_recall": 100.0 * float(min(per_class_recall)) if len(per_class_recall) else 0.0,
-        "feature_count": float(feature_count),
-    }
+from eval.metrics import classification_metrics
 
 
 def main() -> None:
@@ -63,7 +34,7 @@ def main() -> None:
         experiments.setdefault(experiment, {"results": {}})
         feature_counts = values["feature_count"]
         feature_count = feature_counts[0] if feature_counts else 384.0
-        experiments[experiment]["results"][method] = _metrics(
+        experiments[experiment]["results"][method] = classification_metrics(
             values["y_true"], values["y_pred"], feature_count=feature_count
         )
 
