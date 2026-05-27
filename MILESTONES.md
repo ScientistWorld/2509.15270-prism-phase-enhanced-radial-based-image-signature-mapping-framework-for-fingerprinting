@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: none**
+**Current: core_claim**
 
 <!-- Milestone levels (update "Current" above as you progress):
   none             — just started, no meaningful progress yet
@@ -24,5 +24,11 @@
 - Cancelled the first CPU job after logs showed it was progressing correctly but would likely exceed the one-hour CPU-job limit because it extracted PRISM features separately for attribution and binary evaluation.
 - Refactored the method runner to extract PRISM features once and reuse them for both LDA evaluations.
 
+### [2026-05-27 01:00] - core_claim
+- Completed the optimized CPU reproduction job on Tiny GenImage.
+- Reproduced PRISM source attribution at 88.30% accuracy and 88.11 weighted F1 versus the paper's 88.47% accuracy and 88.25 weighted F1.
+- Reproduced PRISM real-vs-generated detection at 94.31% accuracy and 94.31 weighted F1 versus the paper's 95.06% accuracy and 95.05 weighted F1.
+- Preserved the paper's compact 384-feature representation as the constraint metric.
+
 ## Stop Justification
-- Not stopped. The first reproduction job is being prepared.
+- Reproduction reached `core_claim`. The remaining unreproduced scope is broader benchmark coverage beyond the public Tiny GenImage experiment.

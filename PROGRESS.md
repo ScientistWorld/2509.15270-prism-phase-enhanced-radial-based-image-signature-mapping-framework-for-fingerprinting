@@ -10,23 +10,26 @@
 
 ## Results
 
-- No reproduced metrics yet. The first compute job will run PRISM on Tiny GenImage and write `scoring/scores.json`.
-- Paper reference numbers recorded in `scoring/reference.json`:
-  - Tiny GenImage attribution: PRISM accuracy 88.47, weighted F1 88.25.
-  - Tiny GenImage binary detection: PRISM accuracy 95.06, weighted F1 95.05.
+- `scoring/scores.json` contains reproduced PRISM metrics from the completed CPU job.
+- Tiny GenImage attribution:
+  - Paper: 88.47 accuracy, 88.25 weighted F1, 384 features.
+  - Reproduction: 88.30 accuracy, 88.11 weighted F1, 384 features.
+- Tiny GenImage binary detection:
+  - Paper: 95.06 accuracy, 95.05 weighted F1, 384 features.
+  - Reproduction: 94.31 accuracy, 94.31 weighted F1, 384 features.
+- `python validate.py --compare` passes and shows the reproduced metrics are within about one percentage point of the paper's reported values.
 
 ## Remaining
 
-- Finish the Tiny GenImage download.
-- Submit the first offline run through `scripts/run.sh`.
-- Inspect `scoring/scores.json` after the job and compare against `scoring/reference.json`.
-- If the run is valid and the method separates generators substantially above trivial baselines, update the milestone to `core_claim`; otherwise diagnose and resubmit.
+- Broader paper coverage remains: PRISM-36K and additional forensic/deepfake benchmarks were not reproduced.
+- A future expansion could add more public datasets and additional baselines, using the current evaluator contract.
 
 ## Issues
 
 - The paper's PRISM-36K download link was not reachable from this environment, so the reproduction targets the paper's public Tiny GenImage evaluation instead.
 - Tiny GenImage is large enough that the initial setup depends on completing the Hugging Face dataset download before submitting the offline job.
 - The first CPU job was cancelled after 20 minutes because it was healthy but too slow for the one-hour CPU job limit when attribution and binary extraction were duplicated. The runner has been refactored to avoid that duplicated FFT pass.
+- The second CPU job completed successfully in the one-hour limit after sharing feature extraction across tasks.
 
 ## Deviations from Paper
 
