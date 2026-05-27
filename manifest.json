@@ -1,0 +1,130 @@
+{
+  "paper": {
+    "arxiv_id": "2509.15270",
+    "title": "PRISM: Phase-enhanced Radial-based Image Signature Mapping framework for fingerprinting AI-generated images",
+    "date": null,
+    "topics": null
+  },
+  "reproduction": {
+    "milestone": "core_claim",
+    "status": "done",
+    "error": null,
+    "scaffold": "codex",
+    "model": "gpt-5.5",
+    "profile": "gpt-5.5-medium",
+    "effort": "medium",
+    "gpu_hours_used": 0.0,
+    "current_iteration_gpu_budget": 30,
+    "current_iteration_gpu_hours_used": 0.0,
+    "total_gpu_hours_used": 0.0,
+    "current_iteration_cpu_hours_used": 0.601,
+    "total_cpu_hours_used": 0.601,
+    "gpu_budget": 30,
+    "duration_sec": 4616.2,
+    "cost_usd": null,
+    "input_tokens": 6810112,
+    "output_tokens": 26279,
+    "cached_input_tokens": 6144256,
+    "cache_creation_tokens": null,
+    "reasoning_tokens": 0,
+    "total_input_tokens": 6810112,
+    "num_turns": 96,
+    "duration_api_ms": null,
+    "num_runs": 1,
+    "iteration_count": 0,
+    "workflow": "standard",
+    "workflow_step": 0,
+    "total_gpu_jobs": 2,
+    "time_breakdown": {
+      "working": 1076.448656797409,
+      "building": 0.08827733993530273,
+      "installing": 26.473778247833252,
+      "waiting": 3430.5951964855194
+    }
+  },
+  "agents": [
+    {
+      "scaffold": "codex",
+      "model": "gpt-5.5",
+      "profile": "gpt-5.5-medium",
+      "effort": "medium",
+      "role": "reproducer",
+      "is_iteration": false,
+      "iteration": 1,
+      "workflow": "standard",
+      "workflow_step": 0,
+      "started_at": 1779839033.9094024,
+      "finished_at": 1779843650.1007714,
+      "duration_sec": 4616.2,
+      "blocked_sec": 0.0,
+      "status": "done",
+      "error": null,
+      "milestone": "core_claim",
+      "gpu_budget": 30,
+      "gpu_hours_used": 0.0,
+      "total_gpu_hours_used": 0.0,
+      "cpu_hours_used": 0.601,
+      "time_breakdown": {
+        "working": 1076.448656797409,
+        "building": 0.08827733993530273,
+        "installing": 26.473778247833252,
+        "waiting": 3430.5951964855194
+      },
+      "cost_usd": null,
+      "input_tokens": 6810112,
+      "output_tokens": 26279,
+      "cached_input_tokens": 6144256,
+      "cache_creation_tokens": null,
+      "reasoning_tokens": 0,
+      "total_input_tokens": 6810112,
+      "num_turns": 96,
+      "duration_api_ms": null,
+      "tool_uses": {
+        "shell": 82,
+        "file_edit": 14
+      },
+      "gpu_jobs": [
+        {
+          "run_id": "0537c6b8-3c9",
+          "command": "bash /home/user/scripts/run.sh",
+          "num_gpus": 0,
+          "num_cpus": 1,
+          "resource": "gpu-cpu-test",
+          "hive_job_id": "6fbb051f",
+          "status": "running",
+          "returncode": null,
+          "duration_sec": null,
+          "submitted_at": 1779840026.9145536,
+          "started_at": 1779840085.4658754,
+          "completed_at": null
+        },
+        {
+          "run_id": "dfea1ab1-5bf",
+          "command": "bash /home/user/scripts/run.sh",
+          "num_gpus": 0,
+          "num_cpus": 1,
+          "resource": "gpu-cpu-test",
+          "hive_job_id": "d52e1705",
+          "status": "completed",
+          "returncode": 0,
+          "duration_sec": 2164.3,
+          "submitted_at": 1779841392.1398351,
+          "started_at": 1779841407.7209938,
+          "completed_at": 1779843572.0484426
+        }
+      ],
+      "progress_log": "### [2026-05-26 23:57] - none\n- Read the paper summary and implementation details for PRISM, including the radial DFT magnitude/phase feature extraction and LDA classifier.\n- Implemented the paper's actual PRISM computation in `method/`, a method-agnostic Tiny GenImage loader in `data/`, and reusable evaluation code in `eval/`.\n- Added scripts, environment setup, scoring references, and documentation needed to submit the first offline reproduction job.\n\n### [2026-05-27 00:22] - none\n- Cancelled the first CPU job after logs showed it was progressing correctly but would likely exceed the one-hour CPU-job limit because it extracted PRISM features separately for attribution and binary evaluation.\n- Refactored the method runner to extract PRISM features once and reuse them for both LDA evaluations.\n\n### [2026-05-27 01:00] - core_claim\n- Completed the optimized CPU reproduction job on Tiny GenImage.\n- Reproduced PRISM source attribution at 88.30% accuracy and 88.11 weighted F1 versus the paper's 88.47% accuracy and 88.25 weighted F1.\n- Reproduced PRISM real-vs-generated detection at 94.31% accuracy and 94.31 weighted F1 versus the paper's 95.06% accuracy and 95.05 weighted F1.\n- Preserved the paper's compact 384-feature representation as the constraint metric."
+    }
+  ],
+  "components": {
+    "has_container": true,
+    "has_method_code": true,
+    "has_evaluation": true,
+    "has_download_script": true,
+    "has_reproduce_script": true,
+    "has_method_script": true,
+    "has_baseline": true,
+    "has_reference": true,
+    "has_data": true
+  }
+}

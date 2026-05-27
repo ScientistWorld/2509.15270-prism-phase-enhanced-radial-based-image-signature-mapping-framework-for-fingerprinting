@@ -31,4 +31,4 @@
 - Preserved the paper's compact 384-feature representation as the constraint metric.
 
 ## Stop Justification
-- Reproduction reached `core_claim`. The remaining unreproduced scope is broader benchmark coverage beyond the public Tiny GenImage experiment.
+- Completed at milestone `core_claim`.

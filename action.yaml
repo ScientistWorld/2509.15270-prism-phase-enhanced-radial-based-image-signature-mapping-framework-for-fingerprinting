@@ -27,8 +27,8 @@
 #   milestone: core_claim
 #   notes: "Reproduced the core claim. Environment packaged."
 
-action: submit
+action: done
 gpus: 0
 test: false
-milestone: none
-notes: "Rerun PRISM after refactoring feature extraction to be shared across attribution and binary LDA evaluations."
+milestone: core_claim
+notes: "PRISM radial FFT features plus LDA reproduce the Tiny GenImage core claim: 88.30% attribution accuracy and 94.31% binary accuracy with 384 features."
