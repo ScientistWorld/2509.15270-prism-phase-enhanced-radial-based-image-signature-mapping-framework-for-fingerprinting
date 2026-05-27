@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "CPU job to rerun PRISM on Tiny GenImage and add magnitude-only/phase-only attribution ablation scores using the existing downloaded dataset."
+notes: "Completed PRISM reproduction on Tiny GenImage with source attribution, real-vs-fake detection, and magnitude/phase ablations. Validation passes."

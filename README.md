@@ -93,12 +93,39 @@ The main constraint metric is feature dimensionality. The paper emphasizes that 
 
 </details>
 
+### Iteration 3: gpt-5.5
+- **Milestone**: `secondary_claims` | **Status**: done
+- **Working time**: 6m | **GPU**: 0.0h
+- **Jobs**: 3 total (2 completed, 0 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-05-27 01:49] - secondary_claims
+- Completed the ablation CPU job successfully.
+- Added scored magnitude-only and phase-only PRISM variants for Tiny GenImage attribution.
+- Validated the updated scoring contract and reproduced scores with `python validate.py --compare`.
+
+### [2026-05-27 01:04] - secondary_claims
+- Validated the packaged PRISM reproduction with `python validate.py --compare`.
+- Reproduced Tiny GenImage attribution within 0.2 percentage points of the paper's reported accuracy.
+- Reproduced the secondary real-vs-fake GenImage experiment within about 0.8 percentage points of the paper's reported accuracy.
+
+### [2026-05-27 00:58] - core_claim_plus
+- Completed the paper's PRISM radial Fourier feature extraction and LDA pipeline on Tiny GenImage.
+- Produced method prediction artifacts and scored them through the method-agnostic evaluator.
+
+### [2026-05-27 00:23] - method_runs
+- Verified that the PRISM method executes end-to-end on local downloaded benchmark data.
+
+</details>
+
 
 ---
 
 # Reproduction Milestones
 
-**Current: core_claim_plus**
+**Current: secondary_claims**
 
 ## Stop Justification
-- Completed at milestone `core_claim_plus`.
+- Completed at milestone `secondary_claims`.
