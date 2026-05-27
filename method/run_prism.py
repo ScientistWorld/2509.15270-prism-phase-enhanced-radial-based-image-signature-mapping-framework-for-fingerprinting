@@ -43,6 +43,7 @@ def extract_split(
     features: list[np.ndarray] = []
     labels: list[int] = []
     indices: list[int] = []
+    target_class_count = 2 if selection_task == "binary" else len(GENERATOR_NAMES)
 
     desc = f"extract {split} {selection_task}"
     for record in tqdm(iter_records(data_root, split), desc=desc, unit="img"):
@@ -52,6 +53,10 @@ def extract_split(
         features.append(extract_prism_features(record.image, n_bins=n_bins))
         labels.append(record.generator_label)
         indices.append(record.index)
+        if max_per_class is not None:
+            completed = sum(count >= max_per_class for count in counts.values())
+            if completed >= target_class_count:
+                break
     if not features:
         raise RuntimeError(f"No records selected for split={split} task={selection_task}")
     return np.vstack(features), np.asarray(labels, dtype=np.int64), indices
