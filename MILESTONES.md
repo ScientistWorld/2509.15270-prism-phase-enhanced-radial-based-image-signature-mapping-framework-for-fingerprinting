@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-27 02:20] - secondary_claims
+- Prepared a follow-up packaged run that scores the declared majority baseline alongside PRISM artifacts.
+- Extended the canonical evaluators to accept multiple prediction CSVs while preserving method/eval separation.
+- Kept the milestone at `secondary_claims` pending the compute job that will regenerate canonical score files.
+
 ### [2026-05-27 02:11] - secondary_claims
 - Final verification passed after score regeneration.
 - `scoring/scores.json` now includes the full declared metric set, and binary detection scores come from attribution-derived predictions.

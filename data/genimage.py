@@ -39,6 +39,14 @@ class ImageRecord:
     generator_label: int
 
 
+@dataclass(frozen=True)
+class LabelRecord:
+    split: str
+    index: int
+    binary_label: int
+    generator_label: int
+
+
 def shard_paths(root: Path, split: str) -> list[Path]:
     paths = sorted((root / "data").glob(f"{split}-*.parquet"))
     if not paths:
@@ -75,6 +83,25 @@ def iter_records(root: Path, split: str, batch_size: int = 64) -> Iterator[Image
                     split=split,
                     index=offset,
                     image=_decode_image(row["image"]),
+                    binary_label=int(row["label"]),
+                    generator_label=int(row["generator"]),
+                )
+                offset += 1
+
+
+def iter_label_records(root: Path, split: str, batch_size: int = 4096) -> Iterator[LabelRecord]:
+    """Yield Tiny GenImage labels without decoding image payloads."""
+    offset = 0
+    for shard in shard_paths(root, split):
+        parquet = pq.ParquetFile(shard)
+        for batch in parquet.iter_batches(
+            batch_size=batch_size, columns=["label", "generator"]
+        ):
+            rows = batch.to_pylist()
+            for row in rows:
+                yield LabelRecord(
+                    split=split,
+                    index=offset,
                     binary_label=int(row["label"]),
                     generator_label=int(row["generator"]),
                 )

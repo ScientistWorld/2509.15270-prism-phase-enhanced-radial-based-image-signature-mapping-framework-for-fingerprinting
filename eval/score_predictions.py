@@ -14,20 +14,22 @@ from eval.metrics import classification_metrics
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("predictions", type=Path, nargs="?", default=Path("outputs/prism_predictions.csv"))
+    parser.add_argument("predictions", type=Path, nargs="*")
     parser.add_argument("--output", type=Path, default=Path("scoring/scores.json"))
     args = parser.parse_args()
+    prediction_paths = args.predictions or [Path("outputs/prism_predictions.csv")]
 
     groups: dict[tuple[str, str], dict[str, list[int]]] = defaultdict(
         lambda: {"y_true": [], "y_pred": [], "feature_count": []}
     )
-    with args.predictions.open(newline="") as f:
-        for row in csv.DictReader(f):
-            key = (row["experiment"], row["method"])
-            groups[key]["y_true"].append(int(row["y_true"]))
-            groups[key]["y_pred"].append(int(row["y_pred"]))
-            if row.get("feature_count"):
-                groups[key]["feature_count"].append(float(row["feature_count"]))
+    for path in prediction_paths:
+        with path.open(newline="") as f:
+            for row in csv.DictReader(f):
+                key = (row["experiment"], row["method"])
+                groups[key]["y_true"].append(int(row["y_true"]))
+                groups[key]["y_pred"].append(int(row["y_pred"]))
+                if row.get("feature_count"):
+                    groups[key]["feature_count"].append(float(row["feature_count"]))
 
     experiments: dict[str, dict[str, dict[str, dict[str, float]]]] = {}
     for (experiment, method), values in sorted(groups.items()):

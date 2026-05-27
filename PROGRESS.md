@@ -10,6 +10,8 @@
 - The binary Tiny GenImage output now collapses the source-attribution PRISM predictions into real/fake labels instead of training a separate binary classifier.
 - Evaluation is separated from the method and scores prediction CSV artifacts without importing from `method/`.
 - The canonical evaluator reports the full declared metric set: accuracy, balanced accuracy, weighted precision/recall/F1, macro F1, worst-class recall, and feature count.
+- The evaluation entry points now accept multiple prediction CSVs, so the packaged run can score PRISM, ablations, and the majority baseline together.
+- The majority baseline reads label columns directly rather than decoding images, making it cheap enough to include in the standard reproduction path.
 - The completed reproduction reaches `secondary_claims` on the paper's public Tiny GenImage benchmark: source attribution plus the secondary real-vs-fake detection result.
 
 ## Results
@@ -39,6 +41,7 @@
 
 - Broader paper coverage remains: PRISM-36K and additional forensic/deepfake benchmarks were not reproduced.
 - A future expansion could add more public datasets and additional baselines, using the current evaluator contract.
+- A CPU verification job is pending to regenerate canonical score files with the majority baseline included.
 
 ## Issues
 
@@ -48,6 +51,7 @@
 - The second CPU job completed successfully in the one-hour limit after sharing feature extraction across tasks.
 - The third CPU job completed successfully and added magnitude-only and phase-only ablation scores to `scoring/scores.json`.
 - Final verification regenerated the score files after tightening binary detection to use attribution-derived real/fake predictions and after extending the canonical score file to emit the full declared metric set.
+- A login-node smoke run of the new baseline path was not possible because the host Python does not have runtime dependencies such as `tqdm`; syntax validation and `validate.py --compare` passed, and the packaged container has the dependencies in `environment/setup.sh`.
 
 ## Deviations from Paper
 

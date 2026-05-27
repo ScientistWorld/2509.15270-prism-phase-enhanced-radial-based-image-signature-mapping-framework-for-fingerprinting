@@ -1,5 +1,5 @@
-action: done
+action: submit
 gpus: 0
-test: false
+test: true
 milestone: secondary_claims
-notes: "Final verification passed; scores and method-agnostic docs are ready for gym use."
+notes: "CPU verification job to regenerate PRISM plus majority-baseline score artifacts through the combined evaluator path."

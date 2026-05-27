@@ -12,7 +12,7 @@ cd /home/user
 mkdir -p scoring
 
 if [[ $# -gt 0 ]]; then
-  PREDICTIONS="$1"
+  python eval/train/evaluate.py "$@" --output scoring/scores_train.json
 else
   mapfile -t CANDIDATES < <(find outputs -maxdepth 1 -type f -name '*predictions.csv' | sort)
   if [[ "${#CANDIDATES[@]}" -ne 1 ]]; then
@@ -21,6 +21,5 @@ else
     exit 1
   fi
   PREDICTIONS="${CANDIDATES[0]}"
+  python eval/train/evaluate.py "$PREDICTIONS" --output scoring/scores_train.json
 fi
-
-python eval/train/evaluate.py "$PREDICTIONS" --output scoring/scores_train.json

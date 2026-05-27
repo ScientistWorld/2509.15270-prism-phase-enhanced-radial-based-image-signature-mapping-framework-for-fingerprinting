@@ -26,6 +26,8 @@ cd /home/user
 
 mkdir -p scoring
 
-PREDICTIONS="${1:-outputs/prism_predictions.csv}"
-
-python eval/score_predictions.py "$PREDICTIONS" --output scoring/scores.json
+if [[ $# -gt 0 ]]; then
+  python eval/score_predictions.py "$@" --output scoring/scores.json
+else
+  python eval/score_predictions.py outputs/prism_predictions.csv --output scoring/scores.json
+fi

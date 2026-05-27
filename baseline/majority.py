@@ -14,12 +14,12 @@ from tqdm import tqdm
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from data.genimage import BINARY_NAMES, GENERATOR_NAMES, iter_records  # noqa: E402
+from data.genimage import BINARY_NAMES, GENERATOR_NAMES, iter_label_records  # noqa: E402
 
 
 def majority_label(data_root: Path, task: str) -> int:
     counts: Counter[int] = Counter()
-    for record in tqdm(iter_records(data_root, "train"), desc=f"baseline train {task}", unit="img"):
+    for record in tqdm(iter_label_records(data_root, "train"), desc=f"baseline train {task}", unit="row"):
         counts[record.binary_label if task == "binary" else record.generator_label] += 1
     return counts.most_common(1)[0][0]
 
@@ -27,7 +27,7 @@ def majority_label(data_root: Path, task: str) -> int:
 def write_task(writer: csv.DictWriter, data_root: Path, task: str, experiment: str) -> None:
     pred = majority_label(data_root, task)
     names = BINARY_NAMES if task == "binary" else GENERATOR_NAMES
-    for record in tqdm(iter_records(data_root, "validation"), desc=f"baseline eval {task}", unit="img"):
+    for record in tqdm(iter_label_records(data_root, "validation"), desc=f"baseline eval {task}", unit="row"):
         true = record.binary_label if task == "binary" else record.generator_label
         writer.writerow(
             {

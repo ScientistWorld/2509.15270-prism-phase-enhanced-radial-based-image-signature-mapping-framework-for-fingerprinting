@@ -22,13 +22,16 @@ TRAIN_SPLIT_SEED = "tiny-genimage-visible-train-split-v2"
 TRAIN_FRACTION = 0.40
 
 
-def read_rows(path: Path) -> list[dict[str, str]]:
-    with path.open(newline="") as f:
-        rows = list(csv.DictReader(f))
+def read_rows(paths: list[Path]) -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
     required = {"experiment", "method", "sample_id", "y_true", "y_pred"}
-    if rows and not required.issubset(rows[0]):
-        missing = sorted(required - set(rows[0]))
-        raise ValueError(f"{path} is missing required prediction columns: {missing}")
+    for path in paths:
+        with path.open(newline="") as f:
+            path_rows = list(csv.DictReader(f))
+        if path_rows and not required.issubset(path_rows[0]):
+            missing = sorted(required - set(path_rows[0]))
+            raise ValueError(f"{path} is missing required prediction columns: {missing}")
+        rows.extend(path_rows)
     return rows
 
 
@@ -83,11 +86,12 @@ def score_rows(rows: list[dict[str, str]]) -> dict[str, object]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("predictions", type=Path, nargs="?", default=Path("outputs/prism_predictions.csv"))
+    parser.add_argument("predictions", type=Path, nargs="*")
     parser.add_argument("--output", type=Path, default=Path("scoring/scores_train.json"))
     args = parser.parse_args()
+    prediction_paths = args.predictions or [Path("outputs/prism_predictions.csv")]
 
-    rows = read_rows(args.predictions)
+    rows = read_rows(prediction_paths)
     membership = train_membership(rows)
     selected = [row for row in rows if (row["experiment"], row["sample_id"]) in membership]
     if not selected:
