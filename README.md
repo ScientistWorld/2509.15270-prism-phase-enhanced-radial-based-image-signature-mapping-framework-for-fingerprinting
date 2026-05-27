@@ -22,7 +22,7 @@ PRISM extracts handcrafted frequency-domain signatures from each image and class
 
 For each RGB channel, the method computes a two-dimensional DFT, shifts the zero-frequency component to the center, and derives both log magnitude and phase. It then averages these spectra over 64 evenly spaced radial annuli. Magnitude features are arithmetic means of log magnitude values. Phase features are the cosine of the circular mean angle within each annulus.
 
-The three color channels are concatenated, producing `3 * 2 * 64 = 384` features per image. Features are standardized using the training split, then LDA is trained as the supervised projection and classifier.
+The three color channels are concatenated, producing `3 * 2 * 64 = 384` features per image. Features are standardized using the training split, then LDA is trained as the supervised projection and classifier. For the secondary real-vs-fake task, this reproduction collapses the same source-attribution predictions into binary labels.
 
 The original paper evaluates this pipeline on PRISM-36K and four public benchmarks. This reproduction uses the cited Tiny GenImage benchmark because the PRISM-36K reduced release URL was not reachable from this node.
 
@@ -32,11 +32,11 @@ The original paper evaluates this pipeline on PRISM-36K and four public benchmar
 
 Evaluation consumes a prediction CSV written by a method run. The CSV contains one row per validation image with experiment name, method name, sample id, true label, and predicted label.
 
-Metrics are weighted accuracy, precision, recall, and F1, reported as percentages. The reusable evaluator in `eval/` reads only prediction artifacts and writes `scoring/scores.json`.
+Metrics are accuracy plus weighted precision, weighted recall, and weighted F1, reported as percentages. The reusable evaluator in `eval/` also reports balanced accuracy, macro F1, worst-class recall, and the number of per-image values consumed by the classifier so future methods are scored on both average performance and class-coverage constraints. It reads only prediction artifacts and writes `scoring/scores.json`.
 
-The reproduced benchmark uses Tiny GenImage's published training and validation split: 28,000 training images and 7,000 validation images. The attribution experiment predicts source labels. The binary experiment predicts real versus fake labels.
+The reproduced benchmark uses Tiny GenImage's published training and validation split: 28,000 training images and 7,000 validation images. The attribution experiment predicts source labels. The binary experiment predicts real versus fake labels by collapsing the attribution model's source prediction into real versus generated, rather than fitting a separate task-specific binary classifier.
 
-The main constraint metric is feature dimensionality. The paper emphasizes that radial reduction makes the frequency representation compact and practical, so improvements should not simply replace the compact representation with a much larger image descriptor.
+The main constraint metric is representation dimensionality. Improvements should not simply replace a compact image-level representation with a much larger one unless that resource increase is reported and scored.
 
 ---
 
@@ -208,6 +208,43 @@ The main constraint metric is feature dimensionality. The paper emphasizes that 
 
 <details>
 <summary>Progress Log</summary>
+
+### [2026-05-27 01:49] - secondary_claims
+- Completed the ablation CPU job successfully.
+- Added scored magnitude-only and phase-only PRISM variants for Tiny GenImage attribution.
+- Validated the updated scoring contract and reproduced scores with `python validate.py --compare`.
+
+### [2026-05-27 01:04] - secondary_claims
+- Validated the packaged PRISM reproduction with `python validate.py --compare`.
+- Reproduced Tiny GenImage attribution within 0.2 percentage points of the paper's reported accuracy.
+- Reproduced the secondary real-vs-fake GenImage experiment within about 0.8 percentage points of the paper's reported accuracy.
+
+### [2026-05-27 00:58] - core_claim_plus
+- Completed the paper's PRISM radial Fourier feature extraction and LDA pipeline on Tiny GenImage.
+- Produced method prediction artifacts and scored them through the method-agnostic evaluator.
+
+### [2026-05-27 00:23] - method_runs
+- Verified that the PRISM method executes end-to-end on local downloaded benchmark data.
+
+</details>
+
+### Iteration 8: gpt-5.5 (verifier)
+- **Milestone**: `secondary_claims` | **Status**: done
+- **Working time**: 9m | **GPU**: 0.0h
+- **Jobs**: 4 total (3 completed, 0 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-05-27 02:11] - secondary_claims
+- Final verification passed after score regeneration.
+- `scoring/scores.json` now includes the full declared metric set, and binary detection scores come from attribution-derived predictions.
+- Method-agnostic docs were tightened to avoid leaking the paper's implementation details to from-scratch agents.
+
+### [2026-05-27 02:06] - secondary_claims
+- Tightened the canonical evaluator so `scoring/scores.json` reports all metrics declared in `scoring/reference.json`.
+- Updated the binary Tiny GenImage experiment to collapse the attribution model's source predictions into real/fake labels, matching the paper's no task-specific retraining claim.
+- Prepared a fresh CPU submission to rerun PRISM and regenerate score artifacts.
 
 ### [2026-05-27 01:49] - secondary_claims
 - Completed the ablation CPU job successfully.
