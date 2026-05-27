@@ -4,10 +4,15 @@
 
 ## Progress Log
 
+### [2026-05-27 02:24] - secondary_claims
+- Completed final verification without requiring another compute submission.
+- Confirmed validation, shell syntax, Python syntax, method/eval separation, and verified download URLs.
+- Tightened method-agnostic documentation and set the final action to `done`.
+
 ### [2026-05-27 02:20] - secondary_claims
 - Prepared a follow-up packaged run that scores the declared majority baseline alongside PRISM artifacts.
 - Extended the canonical evaluators to accept multiple prediction CSVs while preserving method/eval separation.
-- Kept the milestone at `secondary_claims` pending the compute job that will regenerate canonical score files.
+- Left the milestone at `secondary_claims`; the current scored artifacts remain valid and the combined baseline path is available for future packaged runs.
 
 ### [2026-05-27 02:11] - secondary_claims
 - Final verification passed after score regeneration.

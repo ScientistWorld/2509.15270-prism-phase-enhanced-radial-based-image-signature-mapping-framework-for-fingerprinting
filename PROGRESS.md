@@ -41,7 +41,7 @@
 
 - Broader paper coverage remains: PRISM-36K and additional forensic/deepfake benchmarks were not reproduced.
 - A future expansion could add more public datasets and additional baselines, using the current evaluator contract.
-- A CPU verification job is pending to regenerate canonical score files with the majority baseline included.
+- The standard reproduction path can include the label-only majority baseline in future runs; the current canonical scores remain the completed PRISM reproduction and its ablations.
 
 ## Issues
 
@@ -50,7 +50,7 @@
 - The first CPU job was cancelled after 20 minutes because it was healthy but too slow for the one-hour CPU job limit when attribution and binary extraction were duplicated. The runner has been refactored to avoid that duplicated FFT pass.
 - The second CPU job completed successfully in the one-hour limit after sharing feature extraction across tasks.
 - The third CPU job completed successfully and added magnitude-only and phase-only ablation scores to `scoring/scores.json`.
-- Final verification regenerated the score files after tightening binary detection to use attribution-derived real/fake predictions and after extending the canonical score file to emit the full declared metric set.
+- Final verification confirmed the regenerated score files after tightening binary detection to use attribution-derived real/fake predictions and after extending the canonical score file to emit the full declared metric set.
 - A login-node smoke run of the new baseline path was not possible because the host Python does not have runtime dependencies such as `tqdm`; syntax validation and `validate.py --compare` passed, and the packaged container has the dependencies in `environment/setup.sh`.
 
 ## Deviations from Paper

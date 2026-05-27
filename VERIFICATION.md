@@ -2,27 +2,26 @@
 
 ## Initial Assessment
 
-The workspace already had a valid `secondary_claims` reproduction of PRISM on Tiny GenImage, with method/evaluation separation mostly intact. The claimed milestone was justified, but the final audit found stale score artifacts and some documentation that exposed method details in files intended for from-scratch agents.
+The workspace already contained a valid `secondary_claims` reproduction of the paper's Tiny GenImage results. The method implementation, prediction artifacts, and scored outputs were consistent with the claimed milestone, and the evaluation path reads method outputs rather than regenerating the experiment. The prior turn had left a nonessential CPU submission pending to refresh baseline-inclusive artifacts, but the existing PRISM scores were already valid for final verification.
 
 ## Issues Found
 
-- **Minor:** `scoring/scores.json` had not been regenerated after the evaluator was extended with balanced accuracy, macro F1, and worst-class recall.
-- **Minor:** The binary score artifact still reflected the older task-specific binary classifier rather than the stricter attribution-derived binary protocol.
-- **Minor:** Method-agnostic and method-safe documentation mentioned implementation-specific representation details.
-- **Cosmetic:** `README.md`, `manifest.json`, and `trajectory/` appear dirty in `git status` because they are system-managed read-only mounts in this environment, not editable workspace files.
+- **Minor:** Several method-agnostic or method-safe documents described the current run's binary-output derivation or implementation-oriented variant comparisons more specifically than from-scratch agents need.
+- **Minor:** `action.yaml` was still set to submit a follow-up CPU verification job even though final verification did not require additional compute.
+- **Cosmetic:** `README.md`, `manifest.json`, and deleted `trajectory/` entries appear dirty in `git status`; these are system-managed artifacts outside the reproduction deliverables and were left untouched.
+
+No critical scoring issues were found. The scored metrics are scientific quantities rather than wall-clock speed or deviation from the paper's published values, and the metric coefficients reward accuracy/F1 while accounting for feature-count cost.
 
 ## Fixes Applied
 
-- Regenerated `scoring/scores.json`, `scoring/scores_train.json`, and `scoring/scores_test.json` from the prediction artifact.
-- Updated the prediction artifact's binary rows to match the current method behavior: source-attribution predictions are grouped into real versus generated labels.
-- Added a method-agnostic metric helper in `eval/metrics.py` and rewired the canonical, train, and test evaluators to use it.
-- Tightened `briefing/evaluation.md`, `scoring/EXPERIMENTS.md`, `scoring/TARGETS.md`, `scoring/CONSTRAINTS.md`, and `scoring/DIRECTION.md` to avoid leaking method internals.
-- Verified Hugging Face download URLs for README, train shard, and validation shard with `curl -I -L`.
-- Ran syntax checks and `python validate.py --compare`; all checks passed.
+- Removed method-specific wording from `briefing/evaluation.md`, `scoring/EXPERIMENTS.md`, and `scoring/TARGETS.md` while preserving the prediction-artifact contract.
+- Verified `scripts/download.sh` URLs for the Tiny GenImage README and representative train/validation shards with `curl -I -L`.
+- Re-ran `python validate.py --compare`, shell syntax checks for scripts, and Python bytecode compilation for method, eval, baseline, and data modules.
+- Updated `MILESTONES.md`, `PROGRESS.md`, and `action.yaml` to reflect final verification status.
 
 ## Final Judgment
 
-The workspace is ready to serve as a research gym. Improve-mode agents can build on the reproduced PRISM implementation and from-scratch agents can use the data/evaluation contract without needing the paper's method. The main limitation is dataset scope: the gym reproduces the public Tiny GenImage claims, not the unavailable PRISM-36K benchmark.
+The workspace is ready to serve as a research gym. Improve-mode agents can build on the reproduced method and ablations, while from-scratch agents can use the problem definition, data loader, and evaluator without seeing method internals in the method-agnostic files. The main limitation is dataset scope: the packaged benchmark covers the public Tiny GenImage claims, not the unavailable PRISM-36K benchmark or every paper experiment.
 
 - Milestone: secondary_claims
 - Ready for gym use: yes

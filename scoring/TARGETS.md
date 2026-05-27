@@ -6,12 +6,12 @@ Tests whether a system can identify the image source on Tiny GenImage under the 
 
 - **Metric**: `accuracy` and `f1_weighted` (higher is better)
 - **Constraint**: `feature_count` (lower is better for comparable accuracy)
-- **Comparison check**: compare the main submission with any lower-information variants included in the prediction artifact; the full submission should preserve a clear accuracy advantage at a compact representation size
+- **Comparison check**: compare any submitted variants under the same prediction-artifact interface; improvements should increase accuracy without relying on unreported resource growth
 - **How to run**: produce a prediction CSV and pass it to `bash scripts/evaluate.sh`
 
 ## Secondary: genimage_tiny_binary
 
-Tests whether the same prediction pipeline distinguishes real images from synthetic images on Tiny GenImage.
+Tests whether a submission distinguishes real images from synthetic images on Tiny GenImage.
 
 - **Metric**: `accuracy` and `f1_weighted` (higher is better)
 - **Constraint**: `feature_count` (lower is better for comparable accuracy)

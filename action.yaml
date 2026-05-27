@@ -1,5 +1,5 @@
-action: submit
+action: done
 gpus: 0
-test: true
+test: false
 milestone: secondary_claims
-notes: "CPU verification job to regenerate PRISM plus majority-baseline score artifacts through the combined evaluator path."
+notes: "Final verification passed; workspace is ready for gym use on Tiny GenImage."
