@@ -2,8 +2,8 @@
 # Once you set action to 'done', STOP immediately.
 # Do NOT sleep, poll, or wait. The system reads this file
 # only after your turn ends.
-action: pending
+action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: ""
+notes: "Deterministic label-stratified 50/50 split over validation sample IDs; 5 train metrics and 5 test metrics per existing experiment; scripts written, scores produced later."
