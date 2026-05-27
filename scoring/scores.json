@@ -8,6 +8,20 @@
           "recall_weighted": 88.3,
           "f1_weighted": 88.11372647121352,
           "feature_count": 384.0
+        },
+        "prism_magnitude_only": {
+          "accuracy": 86.44285714285715,
+          "precision_weighted": 86.05427375489022,
+          "recall_weighted": 86.44285714285715,
+          "f1_weighted": 86.144144481306,
+          "feature_count": 192.0
+        },
+        "prism_phase_only": {
+          "accuracy": 56.68571428571428,
+          "precision_weighted": 46.38736918056337,
+          "recall_weighted": 56.68571428571428,
+          "f1_weighted": 46.13960577301653,
+          "feature_count": 192.0
         }
       }
     },
