@@ -14,21 +14,39 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+from sklearn.metrics import (
+    accuracy_score,
+    balanced_accuracy_score,
+    f1_score,
+    precision_score,
+    recall_score,
+)
 
 
 SLICE = "train"
-SPLIT_SEED = "tiny-genimage-eval-split-v1"
+TRAIN_SPLIT_SEED = "tiny-genimage-visible-train-split-v2"
+TRAIN_FRACTION = 0.40
 
 
 def metric_values(y_true: list[int], y_pred: list[int], feature_count: float) -> dict[str, float]:
+    labels = sorted(set(y_true))
+    per_class_recall = recall_score(
+        y_true,
+        y_pred,
+        labels=labels,
+        average=None,
+        zero_division=0,
+    )
     return {
         "accuracy": 100.0 * accuracy_score(y_true, y_pred),
+        "balanced_accuracy": 100.0 * balanced_accuracy_score(y_true, y_pred),
         "precision_weighted": 100.0
         * precision_score(y_true, y_pred, average="weighted", zero_division=0),
         "recall_weighted": 100.0
         * recall_score(y_true, y_pred, average="weighted", zero_division=0),
         "f1_weighted": 100.0 * f1_score(y_true, y_pred, average="weighted", zero_division=0),
+        "f1_macro": 100.0 * f1_score(y_true, y_pred, average="macro", zero_division=0),
+        "worst_class_recall": 100.0 * float(min(per_class_recall)) if len(per_class_recall) else 0.0,
         "feature_count": float(feature_count),
     }
 
@@ -43,28 +61,29 @@ def read_rows(path: Path) -> list[dict[str, str]]:
     return rows
 
 
-def split_membership(rows: list[dict[str, str]]) -> dict[tuple[str, str], str]:
-    """Return deterministic, label-stratified train/test membership.
+def train_membership(rows: list[dict[str, str]]) -> set[tuple[str, str]]:
+    """Return deterministic, label-stratified visible-train membership.
 
-    The split key intentionally omits method so all methods' predictions for
-    the same experiment/sample are evaluated on the same side.
+    The train slice deliberately exposes only its own membership rule. The
+    held-out test scorer uses an additional hidden salt and an unused buffer,
+    so the complement of this set is not the test set.
     """
 
     by_label: dict[tuple[str, str], set[str]] = defaultdict(set)
     for row in rows:
         by_label[(row["experiment"], row["y_true"])].add(row["sample_id"])
 
-    membership: dict[tuple[str, str], str] = {}
+    selected: set[tuple[str, str]] = set()
     for (experiment, _label), sample_ids in by_label.items():
         ordered = sorted(
             sample_ids,
             key=lambda sample_id: hashlib.sha256(
-                f"{SPLIT_SEED}|{experiment}|{sample_id}".encode("utf-8")
+                f"{TRAIN_SPLIT_SEED}|{experiment}|{sample_id}".encode("utf-8")
             ).hexdigest(),
         )
-        for rank, sample_id in enumerate(ordered):
-            membership[(experiment, sample_id)] = "train" if rank % 2 == 0 else "test"
-    return membership
+        count = max(1, int(len(ordered) * TRAIN_FRACTION))
+        selected.update((experiment, sample_id) for sample_id in ordered[:count])
+    return selected
 
 
 def score_rows(rows: list[dict[str, str]]) -> dict[str, object]:
@@ -88,7 +107,7 @@ def score_rows(rows: list[dict[str, str]]) -> dict[str, object]:
             [int(value) for value in values["y_pred"]],
             feature_count=feature_count,
         )
-    return {"experiments": experiments}
+    return {"slice": SLICE, "experiments": experiments}
 
 
 def main() -> None:
@@ -98,12 +117,8 @@ def main() -> None:
     args = parser.parse_args()
 
     rows = read_rows(args.predictions)
-    membership = split_membership(rows)
-    selected = [
-        row
-        for row in rows
-        if membership.get((row["experiment"], row["sample_id"])) == SLICE
-    ]
+    membership = train_membership(rows)
+    selected = [row for row in rows if (row["experiment"], row["sample_id"]) in membership]
     if not selected:
         raise RuntimeError(f"No prediction rows selected for {SLICE} slice from {args.predictions}")
 
