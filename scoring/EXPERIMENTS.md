@@ -8,4 +8,4 @@ The submitted method also reports magnitude-only and phase-only variants for thi
 
 ## genimage_tiny_binary
 
-Tests real-vs-fake detection on the same benchmark split. The experiment asks whether a source-attribution-oriented system also performs well on the simpler binary authenticity task.
+Tests real-vs-fake detection on the same benchmark split. The experiment asks whether a source-attribution-oriented system also performs well on the simpler binary authenticity task when source predictions are grouped into real versus generated labels.

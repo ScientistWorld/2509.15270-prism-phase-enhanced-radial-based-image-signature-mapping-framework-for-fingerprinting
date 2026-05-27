@@ -1,5 +1,5 @@
-action: done
+action: submit
 gpus: 0
-test: false
+test: true
 milestone: secondary_claims
-notes: "Packaging audit passed: download.sh fetches Tiny-GenImage from public Hugging Face URLs into data/downloads and committed code has no shared-path dependency."
+notes: "CPU rerun to regenerate PRISM predictions and full scoring metrics after aligning binary detection with attribution-derived predictions."

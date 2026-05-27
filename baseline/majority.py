@@ -39,6 +39,7 @@ def write_task(writer: csv.DictWriter, data_root: Path, task: str, experiment: s
                 "y_pred": pred,
                 "y_true_name": names.get(true, str(true)),
                 "y_pred_name": names.get(pred, str(pred)),
+                "feature_count": 0,
             }
         )
 
@@ -49,7 +50,17 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=ROOT / "outputs/baseline_predictions.csv")
     args = parser.parse_args()
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    fields = ["experiment", "method", "split", "sample_id", "y_true", "y_pred", "y_true_name", "y_pred_name"]
+    fields = [
+        "experiment",
+        "method",
+        "split",
+        "sample_id",
+        "y_true",
+        "y_pred",
+        "y_true_name",
+        "y_pred_name",
+        "feature_count",
+    ]
     with args.output.open("w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()

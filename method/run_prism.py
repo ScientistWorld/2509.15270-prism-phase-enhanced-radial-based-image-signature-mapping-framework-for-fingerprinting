@@ -81,19 +81,22 @@ def run_task(
     lda.fit(scaled_train_x, train_y)
     pred_y = lda.predict(scaled_test_x)
 
-    names = BINARY_NAMES if task == "binary" else GENERATOR_NAMES
+    collapse_binary = task == "binary_from_attribution"
+    names = BINARY_NAMES if task in {"binary", "binary_from_attribution"} else GENERATOR_NAMES
     rows: list[dict[str, object]] = []
     for idx, true_label, pred_label in zip(test_indices, test_y.tolist(), pred_y.tolist()):
+        output_true = int(true_label > 0) if collapse_binary else int(true_label)
+        output_pred = int(pred_label > 0) if collapse_binary else int(pred_label)
         rows.append(
             {
                 "experiment": experiment,
                 "method": method,
                 "split": "validation",
                 "sample_id": f"validation/{idx}",
-                "y_true": int(true_label),
-                "y_pred": int(pred_label),
-                "y_true_name": names.get(int(true_label), str(true_label)),
-                "y_pred_name": names.get(int(pred_label), str(pred_label)),
+                "y_true": output_true,
+                "y_pred": output_pred,
+                "y_true_name": names.get(output_true, str(output_true)),
+                "y_pred_name": names.get(output_pred, str(output_pred)),
                 "feature_count": feature_count,
             }
         )
@@ -135,7 +138,7 @@ def main() -> None:
 
     # PRISM uses the same Fourier feature representation for both attribution
     # and binary detection, so extract it once and reuse it for each LDA task.
-    selection_task = "binary" if args.task == "binary" else "attribution"
+    selection_task = "attribution"
     train_x, train_generator_y, _ = extract_split(
         args.data_root, "train", selection_task, args.max_train_per_class, args.n_bins
     )
@@ -169,11 +172,11 @@ def main() -> None:
         rows.extend(
             run_task(
                 train_x,
-                (train_generator_y > 0).astype(np.int64),
+                train_generator_y,
                 test_x,
-                (test_generator_y > 0).astype(np.int64),
+                test_generator_y,
                 test_indices,
-                "binary",
+                "binary_from_attribution",
                 "genimage_tiny_binary",
                 "prism",
                 train_x.shape[1],

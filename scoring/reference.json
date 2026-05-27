@@ -64,6 +64,10 @@
         "random_guess": {
           "type": "baseline",
           "accuracy": 12.5
+        },
+        "majority_baseline": {
+          "type": "baseline",
+          "feature_count": 0
         }
       }
     },
@@ -123,6 +127,10 @@
         "genimage_paper_detector": {
           "type": "baseline",
           "accuracy": 82.2
+        },
+        "majority_baseline": {
+          "type": "baseline",
+          "feature_count": 0
         }
       }
     }

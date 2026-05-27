@@ -7,7 +7,9 @@
 - The method pipeline trains an LDA classifier on extracted features and writes prediction artifacts for both source attribution and real-vs-generated detection.
 - The method runner now extracts PRISM features once and reuses the same representation for attribution and binary LDA classifiers.
 - The runner now also emits attribution ablations for magnitude-only and phase-only PRISM feature slices without rerunning FFT extraction.
+- The binary Tiny GenImage output now collapses the source-attribution PRISM predictions into real/fake labels instead of training a separate binary classifier.
 - Evaluation is separated from the method and scores prediction CSV artifacts without importing from `method/`.
+- The canonical evaluator reports the full declared metric set: accuracy, balanced accuracy, weighted precision/recall/F1, macro F1, worst-class recall, and feature count.
 - The completed reproduction reaches `secondary_claims` on the paper's public Tiny GenImage benchmark: source attribution plus the secondary real-vs-fake detection result.
 
 ## Results
@@ -45,6 +47,7 @@
 - The first CPU job was cancelled after 20 minutes because it was healthy but too slow for the one-hour CPU job limit when attribution and binary extraction were duplicated. The runner has been refactored to avoid that duplicated FFT pass.
 - The second CPU job completed successfully in the one-hour limit after sharing feature extraction across tasks.
 - The third CPU job completed successfully and added magnitude-only and phase-only ablation scores to `scoring/scores.json`.
+- Current turn prepares a CPU rerun because the binary experiment implementation was tightened to use attribution-derived real/fake predictions and the canonical score file now emits the full declared metric set.
 
 ## Deviations from Paper
 
