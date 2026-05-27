@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-05-27 01:49] - secondary_claims
+- Completed the ablation CPU job successfully.
+- Added scored magnitude-only and phase-only PRISM variants for Tiny GenImage attribution.
+- Validated the updated scoring contract and reproduced scores with `python validate.py --compare`.
+
 ### [2026-05-27 01:04] - secondary_claims
 - Validated the packaged PRISM reproduction with `python validate.py --compare`.
 - Reproduced Tiny GenImage attribution within 0.2 percentage points of the paper's reported accuracy.

@@ -16,6 +16,11 @@
 - Tiny GenImage attribution:
   - Paper: 88.47 accuracy, 88.25 weighted F1, 384 features.
   - Reproduction: 88.30 accuracy, 88.11 weighted F1, 384 features.
+- Tiny GenImage attribution ablation:
+  - Full PRISM: 88.30 accuracy, 88.11 weighted F1, 384 features.
+  - Magnitude-only PRISM: 86.44 accuracy, 86.14 weighted F1, 192 features.
+  - Phase-only PRISM: 56.69 accuracy, 46.14 weighted F1, 192 features.
+  - Full magnitude-plus-phase PRISM improves attribution accuracy by 1.86 percentage points over magnitude alone on this public benchmark.
 - Tiny GenImage binary detection:
   - Paper: 95.06 accuracy, 95.05 weighted F1, 384 features.
   - Reproduction: 94.31 accuracy, 94.31 weighted F1, 384 features.
@@ -30,7 +35,6 @@
 
 ## Remaining
 
-- The next submitted CPU job will regenerate `outputs/prism_predictions.csv` and `scoring/scores.json` with magnitude-only and phase-only attribution ablations included.
 - Broader paper coverage remains: PRISM-36K and additional forensic/deepfake benchmarks were not reproduced.
 - A future expansion could add more public datasets and additional baselines, using the current evaluator contract.
 
@@ -40,6 +44,7 @@
 - Tiny GenImage is large enough that the initial setup depends on completing the Hugging Face dataset download before submitting the offline job.
 - The first CPU job was cancelled after 20 minutes because it was healthy but too slow for the one-hour CPU job limit when attribution and binary extraction were duplicated. The runner has been refactored to avoid that duplicated FFT pass.
 - The second CPU job completed successfully in the one-hour limit after sharing feature extraction across tasks.
+- The third CPU job completed successfully and added magnitude-only and phase-only ablation scores to `scoring/scores.json`.
 
 ## Deviations from Paper
 
