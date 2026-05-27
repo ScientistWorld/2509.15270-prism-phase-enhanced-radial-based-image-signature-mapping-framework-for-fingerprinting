@@ -7,6 +7,7 @@
 - The method pipeline trains an LDA classifier on extracted features and writes prediction artifacts for both source attribution and real-vs-generated detection.
 - The method runner now extracts PRISM features once and reuses the same representation for attribution and binary LDA classifiers.
 - Evaluation is separated from the method and scores prediction CSV artifacts without importing from `method/`.
+- The completed reproduction reaches `core_claim` on the paper's public Tiny GenImage benchmark.
 
 ## Results
 
@@ -18,6 +19,7 @@
   - Paper: 95.06 accuracy, 95.05 weighted F1, 384 features.
   - Reproduction: 94.31 accuracy, 94.31 weighted F1, 384 features.
 - `python validate.py --compare` passes and shows the reproduced metrics are within about one percentage point of the paper's reported values.
+- Current milestone: `core_claim`.
 
 ## Remaining
 
