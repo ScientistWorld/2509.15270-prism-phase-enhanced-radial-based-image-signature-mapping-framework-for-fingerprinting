@@ -1,0 +1,138 @@
+{
+  "experiments": {
+    "genimage_tiny_attribution": {
+      "description": "Tiny GenImage source attribution with the benchmark train/validation split used in Table 1.",
+      "weight": 0.65,
+      "primary_metric": "accuracy",
+      "metrics": {
+        "accuracy": {
+          "higher_is_better": true,
+          "coefficient": 1.0,
+          "description": "Overall source-attribution accuracy on the Tiny GenImage validation slice."
+        },
+        "balanced_accuracy": {
+          "higher_is_better": true,
+          "coefficient": 0.6,
+          "description": "Mean per-class recall, which catches shortcuts that improve common classes while sacrificing harder generators."
+        },
+        "precision_weighted": {
+          "higher_is_better": true,
+          "coefficient": 0.3,
+          "description": "Weighted precision for source attribution, retaining continuity with the original aggregate classification report."
+        },
+        "recall_weighted": {
+          "higher_is_better": true,
+          "coefficient": 0.3,
+          "description": "Weighted recall for source attribution, retaining continuity with the original aggregate classification report."
+        },
+        "f1_weighted": {
+          "higher_is_better": true,
+          "coefficient": 0.7,
+          "description": "Weighted F1 for source attribution, combining precision and recall at the aggregate class distribution."
+        },
+        "f1_macro": {
+          "higher_is_better": true,
+          "coefficient": 0.5,
+          "description": "Unweighted macro F1, which rewards methods that improve all generator classes rather than only the easiest ones."
+        },
+        "worst_class_recall": {
+          "higher_is_better": true,
+          "coefficient": 0.4,
+          "description": "Lowest per-class recall, included to expose methods that abandon a difficult source class."
+        },
+        "feature_count": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Descriptor dimensionality, used as a machine-independent compactness constraint."
+        }
+      },
+      "results": {
+        "prism": {
+          "type": "proposed",
+          "accuracy": 88.47,
+          "f1_weighted": 88.25,
+          "feature_count": 384
+        },
+        "prism_magnitude_only": {
+          "type": "baseline",
+          "feature_count": 192
+        },
+        "prism_phase_only": {
+          "type": "baseline",
+          "feature_count": 192
+        },
+        "random_guess": {
+          "type": "baseline",
+          "accuracy": 12.5
+        },
+        "majority_baseline": {
+          "type": "baseline",
+          "feature_count": 0
+        }
+      }
+    },
+    "genimage_tiny_binary": {
+      "description": "Tiny GenImage real-vs-fake classification on the same split, testing whether source attribution features also support binary synthetic-image detection.",
+      "weight": 0.35,
+      "primary_metric": "accuracy",
+      "metrics": {
+        "accuracy": {
+          "higher_is_better": true,
+          "coefficient": 1.0,
+          "description": "Overall real-vs-fake accuracy on the Tiny GenImage validation slice."
+        },
+        "balanced_accuracy": {
+          "higher_is_better": true,
+          "coefficient": 0.6,
+          "description": "Average of real-image and fake-image recall, guarding against single-side binary shortcuts."
+        },
+        "precision_weighted": {
+          "higher_is_better": true,
+          "coefficient": 0.3,
+          "description": "Weighted precision for the binary real-vs-fake task."
+        },
+        "recall_weighted": {
+          "higher_is_better": true,
+          "coefficient": 0.3,
+          "description": "Weighted recall for the binary real-vs-fake task."
+        },
+        "f1_weighted": {
+          "higher_is_better": true,
+          "coefficient": 0.7,
+          "description": "Weighted F1 for the binary real-vs-fake task."
+        },
+        "f1_macro": {
+          "higher_is_better": true,
+          "coefficient": 0.5,
+          "description": "Unweighted macro F1, exposing methods that trade away either real or fake recall."
+        },
+        "worst_class_recall": {
+          "higher_is_better": true,
+          "coefficient": 0.4,
+          "description": "Lower of real-image recall and fake-image recall."
+        },
+        "feature_count": {
+          "higher_is_better": false,
+          "coefficient": -0.2,
+          "description": "Descriptor dimensionality, used as a machine-independent compactness constraint."
+        }
+      },
+      "results": {
+        "prism": {
+          "type": "proposed",
+          "accuracy": 95.06,
+          "f1_weighted": 95.05,
+          "feature_count": 384
+        },
+        "genimage_paper_detector": {
+          "type": "baseline",
+          "accuracy": 82.2
+        },
+        "majority_baseline": {
+          "type": "baseline",
+          "feature_count": 0
+        }
+      }
+    }
+  }
+}
