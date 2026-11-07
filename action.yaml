@@ -1,4 +1,4 @@
 action: submit
 gpus: 0
 test: false
-notes: "Run bundled redteam audit: exact reference evaluation, artifact shortcuts, 3 deterministic refits, weaker variants and stronger compact classifiers; save per-run scores."
+notes: "Reference evaluation fails on missing eval import. Run inexpensive shortcut candidates and majority baseline through unchanged no-argument scripts; preserve failures without evaluator or Python-environment changes."

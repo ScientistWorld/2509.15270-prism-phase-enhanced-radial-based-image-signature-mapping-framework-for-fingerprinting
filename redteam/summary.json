@@ -1,8 +1,102 @@
 [
   {
     "name": "reference_cached",
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "shortcut_visible_labels",
     "returncode": 0,
-    "seconds": 0.8667366279987618,
+    "seconds": 5.577045353944413,
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "shortcut_forged_truth",
+    "returncode": 0,
+    "seconds": 1.3730631900252774,
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "shortcut_shrunk_test",
+    "returncode": 0,
+    "seconds": 0.7169374600052834,
+    "rows": 26847,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "shortcut_feature_zero",
+    "returncode": 0,
+    "seconds": 0.717386414995417,
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "shortcut_impossible_values",
+    "returncode": 0,
+    "seconds": 1.3715653610415757,
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "shortcut_score_overwrite",
+    "returncode": 0,
+    "seconds": 0.7187543010804802,
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "shortcut_baseline_replacement",
+    "returncode": 0,
+    "seconds": 0.7167920849751681,
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "constant_output_control",
+    "returncode": 0,
+    "seconds": 1.3741967679234222,
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "shortcut_empty_output",
+    "returncode": 0,
+    "seconds": 1.1703990870155394,
+    "rows": 0,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "shortcut_null_feature_count",
+    "returncode": 0,
+    "seconds": 1.3209565810393542,
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "shortcut_nan_feature_count",
+    "returncode": 0,
+    "seconds": 1.3236546750413254,
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  },
+  {
+    "name": "baseline_majority",
+    "returncode": 0,
+    "seconds": 3.4255590739194304,
     "rows": 28000,
     "train_returncode": 1,
     "test_returncode": 1
