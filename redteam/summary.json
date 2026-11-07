@@ -1,0 +1,10 @@
+[
+  {
+    "name": "reference_cached",
+    "returncode": 0,
+    "seconds": 0.8667366279987618,
+    "rows": 28000,
+    "train_returncode": 1,
+    "test_returncode": 1
+  }
+]
