@@ -1,0 +1,76 @@
+{
+  "slice": "train",
+  "n_samples": 5600,
+  "experiments": {
+    "genimage_tiny_attribution": {
+      "results": {
+        "majority_baseline": {
+          "accuracy": 50.0,
+          "balanced_accuracy": 12.5,
+          "precision_weighted": 25.0,
+          "f1_weighted": 33.33333333333333,
+          "f1_macro": 8.333333333333332,
+          "worst_class_recall": 0.0
+        },
+        "prism": {
+          "accuracy": 88.42857142857143,
+          "balanced_accuracy": 82.29464285714286,
+          "precision_weighted": 88.22858647736302,
+          "f1_weighted": 88.27429444987554,
+          "f1_macro": 83.27081907808598,
+          "worst_class_recall": 56.75
+        },
+        "prism_magnitude_only": {
+          "accuracy": 85.375,
+          "balanced_accuracy": 77.75446428571429,
+          "precision_weighted": 85.13997955284232,
+          "f1_weighted": 85.17291099701943,
+          "f1_macro": 78.70722257577978,
+          "worst_class_recall": 56.25
+        },
+        "prism_phase_only": {
+          "accuracy": 55.964285714285715,
+          "balanced_accuracy": 27.330357142857142,
+          "precision_weighted": 47.245398997816885,
+          "f1_weighted": 45.22938116923792,
+          "f1_macro": 26.339877043495065,
+          "worst_class_recall": 0.0
+        }
+      }
+    },
+    "genimage_tiny_binary": {
+      "results": {
+        "majority_baseline": {
+          "accuracy": 50.0,
+          "precision_weighted": 25.0,
+          "f1_weighted": 33.33333333333333,
+          "worst_class_recall": 0.0
+        },
+        "prism": {
+          "accuracy": 94.85714285714286,
+          "precision_weighted": 94.91216025345335,
+          "f1_weighted": 94.85556737465133,
+          "worst_class_recall": 93.10714285714286
+        },
+        "prism_magnitude_only": {
+          "accuracy": 93.67857142857143,
+          "precision_weighted": 93.73891327627504,
+          "f1_weighted": 93.67639042853557,
+          "worst_class_recall": 91.82142857142857
+        },
+        "prism_phase_only": {
+          "accuracy": 60.44642857142857,
+          "precision_weighted": 69.13895276978504,
+          "f1_weighted": 55.380060693045785,
+          "worst_class_recall": 26.75
+        }
+      }
+    }
+  },
+  "_failed_methods": {},
+  "_prediction_files": [
+    "/home/user/outputs/baseline_predictions.csv",
+    "/home/user/outputs/prism_predictions.csv"
+  ],
+  "_skipped_files": []
+}

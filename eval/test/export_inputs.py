@@ -5,9 +5,14 @@ Reads the published Tiny GenImage *validation* shards (which carry labels)
 from ``eval/test/downloads/`` and writes:
 
 * ``data/downloads/tiny-genimage/test/test-0000k-of-00004.parquet`` - the
-  method-visible test inputs: ``sample_id`` + raw encoded image bytes only,
-  ordered by ``sample_id`` (the public shards follow a fixed label cycle, so
-  their row order must not survive) and without the parquet ``path`` field.
+  method-visible test inputs: ``sample_id`` + image only, ordered by
+  ``sample_id`` (the public shards follow a fixed label cycle, so their row
+  order must not survive), without the parquet ``path`` field (it holds
+  label-bearing file names such as ``0_adm_85.PNG``). Each image is the
+  decoded RGB pixel array re-encoded as lossless PNG: pixels are identical to
+  what ``Image.open(...).convert("RGB")`` gives on the published file, but
+  the container (every real image is a JPEG, every generated one a PNG) and
+  file metadata no longer reveal the source.
 * ``eval/test/labels.csv`` - the hidden answers (written once, verified after).
 * ``eval/test/downloads/index_map.csv`` - public row index -> sample_id, used
   only by audits that replay pre-hardening artifacts.
@@ -23,8 +28,11 @@ import hashlib
 from collections import Counter
 from pathlib import Path
 
+from io import BytesIO
+
 import pyarrow as pa
 import pyarrow.parquet as pq
+from PIL import Image
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
@@ -37,6 +45,14 @@ def raw_bytes(value: object) -> bytes:
             return bytes(value["bytes"])
         return Path(value["path"]).read_bytes()
     return bytes(value)
+
+
+def canonical_png(raw: bytes) -> bytes:
+    with Image.open(BytesIO(raw)) as image:
+        rgb = image.convert("RGB")
+    buffer = BytesIO()
+    rgb.save(buffer, format="PNG")
+    return buffer.getvalue()
 
 
 def iter_raw(raw_dir: Path, columns: list[str]):
@@ -109,7 +125,7 @@ def main() -> None:
         payload: dict[str, bytes] = {}
         for index, row in iter_raw(args.raw_dir, ["image"]):
             if ids[index] in wanted:
-                payload[ids[index]] = raw_bytes(row["image"])
+                payload[ids[index]] = canonical_png(raw_bytes(row["image"]))
         keys = sorted(payload)
         table = pa.table({"sample_id": keys, "image": [payload[s] for s in keys]}, schema=schema)
         tmp = target.with_suffix(".parquet.part")

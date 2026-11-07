@@ -5,16 +5,17 @@
 # Idempotent: every fetch is skipped when its target already exists.
 #
 # Estimated total download size: 8.36 GB
-# Estimated disk usage after download: ~10.1 GB (raw shards + 1.75 GB label-free test copy)
+# Estimated disk usage after download: ~11 GB (raw shards + ~2.5 GB label-free PNG test copy)
 #
 # Layout produced:
 #   data/downloads/tiny-genimage/data/train-*.parquet   published training split (labelled)
 #   eval/test/downloads/validation-*.parquet            published validation split (labelled,
 #                                                        hidden side of the benchmark)
 #   data/downloads/tiny-genimage/test/test-*.parquet    the same 7,000 validation images as
-#                                                        label-free test inputs (sample_id + bytes)
-# The last step needs a Python with pyarrow (installed by environment/setup.sh);
-# when the host python3 lacks it, `uv run --with pyarrow` is used instead.
+#                                                        label-free test inputs (sample_id + the
+#                                                        decoded RGB pixels as lossless PNG)
+# The last step needs a Python with pyarrow + pillow (installed by environment/setup.sh);
+# when the host python3 lacks them, `uv run --with pyarrow --with pillow` is used instead.
 
 set -euo pipefail
 
@@ -49,9 +50,9 @@ if [ "${#test_shards[@]}" -ne 4 ]; then
   for i in 0 1 2 3; do
     fetch "data/validation-0000${i}-of-00004.parquet" "$HIDDEN_DIR/validation-0000${i}-of-00004.parquet"
   done
-  if python3 -c "import pyarrow" >/dev/null 2>&1; then
+  if python3 -c "import pyarrow, PIL" >/dev/null 2>&1; then
     python3 eval/test/export_inputs.py
   else
-    uv run --no-project --with pyarrow python3 eval/test/export_inputs.py
+    uv run --no-project --with pyarrow --with pillow python3 eval/test/export_inputs.py
   fi
 fi

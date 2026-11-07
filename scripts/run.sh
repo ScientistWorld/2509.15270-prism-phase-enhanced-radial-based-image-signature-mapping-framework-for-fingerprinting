@@ -12,9 +12,14 @@ cd /home/user
 # per node core (gradient boosting stalled for 45+ min in the first attempt).
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 
-echo "== 1. export hidden test inputs"
+echo "== 1. export hidden test inputs (label-free, lossless PNG of decoded pixels)"
 if [[ ! -f eval/test/labels.csv || $(ls data/downloads/tiny-genimage/test/test-*.parquet 2>/dev/null | wc -l) -ne 4 ]]; then
   python3 eval/test/export_inputs.py
+fi
+# keep the features extracted from the original public test files for the
+# PNG re-encoding equality check; the method cache is fingerprinted and rebuilt
+if [[ -f outputs/cache/prism_features.npz && ! -f outputs/cache/prism_features.orig.npz ]]; then
+  mv outputs/cache/prism_features.npz outputs/cache/prism_features.orig.npz
 fi
 echo "== 2. dev split"
 python3 data/make_dev_split.py

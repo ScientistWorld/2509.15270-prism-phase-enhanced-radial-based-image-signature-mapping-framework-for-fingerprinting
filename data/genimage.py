@@ -5,8 +5,9 @@ Layout under ``data/downloads/tiny-genimage/`` (populated by scripts/download.sh
 * ``data/train-*.parquet`` - the published training split (28,000 images) with
   its ``label`` (real/fake) and ``generator`` (source) columns.
 * ``test/test-*.parquet`` - the published validation split (7,000 images) used
-  as the held-out test set. These shards carry only ``sample_id`` and the raw
-  ``image`` bytes; their labels are not part of the visible workspace.
+  as the held-out test set. These shards carry only ``sample_id`` and the
+  ``image`` (a lossless PNG of the decoded RGB pixels, so the container of the
+  published file is not kept); their labels are not part of the workspace.
 
 ``data/splits/dev.csv`` lists a fixed, label-stratified 20% of the training
 split (5,600 images) used as the visible development slice scored by

@@ -357,8 +357,106 @@ def main() -> None:
                     {"before": before_replay(name, tp, labels, 0),
                      "top_train_signatures": [list(map(str, k)) + [v] for k, v in sig_counts.most_common(25)]})
 
+    # 14 probe: image size only (survives the PNG re-encoding; left open)
+    def size_lookup(entries):
+        table = defaultdict(Counter)
+        for _, sig, lab in entries:
+            table[(sig[2], sig[3])][lab] += 1
+        glob = Counter(lab for *_, lab in entries).most_common(1)[0][0]
+        return lambda sig: table[(sig[2], sig[3])].most_common(1)[0][0] if (sig[2], sig[3]) in table else glob
+
+    fit_size, full_size = size_lookup([e for e in sig_train if e[0] not in dev]), size_lookup(sig_train)
+    name = "probe_resolution_lookup"
+    rows = [dict(method=name, split="dev", sample_id=s, prediction=fit_size(dev_sig[s])) for s in dev_ids]
+    rows += [dict(method=name, split="test", sample_id=s, prediction=full_size(sig_test[s])) for s in test_ids]
+    score_candidate(name, write_rows(OUT / name / "predictions.csv", rows), name, ref, results)
+
+    # 15/16 PRISM + file-container rule ("JPEG => real"), on the original public
+    # files (state before the PNG re-encoding) and on the served test inputs.
+    def lda_proba(mask, target):
+        sc = StandardScaler().fit(x[mask])
+        lda = LinearDiscriminantAnalysis(solver="svd").fit(sc.transform(x[mask]), y[mask])
+        return lda.classes_, lda.predict_proba(sc.transform(target))
+
+    def hybrid(classes, proba, is_real):
+        fake = proba.copy()
+        fake[:, list(classes).index(0)] = -1.0
+        return [0 if r else int(classes[i]) for r, i in zip(is_real, fake.argmax(axis=1))]
+
+    dev_cls, dev_proba = lda_proba(~in_dev, x[in_dev])
+    test_cls, test_proba = lda_proba(np.ones(len(y), bool), tx)
+    orig_fmt = {}
+    for row in raw_iter(sorted((ROOT / "eval/test/downloads").glob("validation-*.parquet")), ["image"]):
+        raw = row["image"]["bytes"]
+        orig_fmt[content_id("te", raw)] = image_signature(raw)[0]
+    dev_real = [dev_sig[s][0] == "JPEG" for s in dev_ids]
+    dev_hyb = hybrid(dev_cls, dev_proba, dev_real)
+    for name, fmt in [("shortcut_container_format_original_files", orig_fmt),
+                      ("shortcut_container_format", {s: sig_test[s][0] for s in test_ids})]:
+        test_hyb = hybrid(test_cls, test_proba, [fmt[s] == "JPEG" for s in test_ids])
+        rows = [dict(method=name, split="dev", sample_id=s, prediction=p) for s, p in zip(dev_ids, dev_hyb)]
+        rows += [dict(method=name, split="test", sample_id=s, prediction=p) for s, p in zip(test_ids, test_hyb)]
+        score_candidate(name, write_rows(OUT / name / "predictions.csv", rows), name, ref, results,
+                        {"test_formats": dict(Counter(fmt[s] for s in test_ids))})
+
+    # 17 PRISM + pixel-level JPEG-grid trace (8x8 blockiness); survives the
+    # PNG re-encoding because it reads pixels. Left open; payoff measured.
+    def blockiness(image: Image.Image) -> float:
+        g = np.asarray(image.convert("L"), dtype=np.float32)
+        dh, dv = np.abs(np.diff(g, axis=1)), np.abs(np.diff(g, axis=0))
+        jh, jv = np.arange(dh.shape[1]) % 8 == 7, np.arange(dv.shape[0]) % 8 == 7
+        if not jh.any() or not jv.any():
+            return 1.0
+        return float((dh[:, jh].mean() / (dh[:, ~jh].mean() + 1e-6) + dv[jv].mean() / (dv[~jv].mean() + 1e-6)) / 2)
+
+    log("pixel JPEG-trace probe: decoding images")
+    rng = np.random.default_rng(0)
+    fit_ids = [s for s, d in zip(train_ids, in_dev) if not d]
+    calib = set(rng.choice(fit_ids, size=3000, replace=False).tolist())
+    train_label = dict(zip(train_ids, y.tolist()))
+    block = {}
+    seen = Counter()
+    for row in raw_iter(train_shards(), ["image"]):
+        raw = row["image"]["bytes"]
+        base = content_id("tr", raw)
+        k = seen[base]
+        seen[base] += 1
+        sid = base if k == 0 else f"{base}-dup{k}"
+        if sid in calib or sid in dev:
+            block[sid] = blockiness(Image.open(BytesIO(raw)).convert("RGB"))
+    for row in raw_iter(test_shards(), ["sample_id", "image"]):
+        block[row["sample_id"]] = blockiness(Image.open(BytesIO(row["image"])).convert("RGB"))
+    cal_b = np.array([block[s] for s in sorted(calib)])
+    cal_r = np.array([train_label[s] == 0 for s in sorted(calib)])
+    accs = np.array([np.mean((cal_b > t) == cal_r) for t in cal_b])
+    best_t, best_acc = float(cal_b[accs.argmax()]), float(accs.max())
+    name = "shortcut_pixel_jpeg_trace"
+    rows = [dict(method=name, split="dev", sample_id=s, prediction=p)
+            for s, p in zip(dev_ids, hybrid(dev_cls, dev_proba, [block[s] > best_t for s in dev_ids]))]
+    rows += [dict(method=name, split="test", sample_id=s, prediction=p)
+             for s, p in zip(test_ids, hybrid(test_cls, test_proba, [block[s] > best_t for s in test_ids]))]
+    score_candidate(name, write_rows(OUT / name / "predictions.csv", rows), name, ref, results,
+                    {"threshold": best_t, "calibration_accuracy": float(best_acc)})
+
+    # PNG re-encoding must not change what a pixel-based method sees.
+    equality = {}
+    orig_cache = ROOT / "outputs/cache/prism_features.orig.npz"
+    if orig_cache.exists():
+        old = np.load(orig_cache)
+        old_rows = {s: i for i, s in enumerate(old["test_ids"].tolist())}
+        diffs = np.array([np.abs(old["test_x"][old_rows[s]] - tx[i]).max() for i, s in enumerate(test_ids)])
+        equality = {"test_images_compared": int(len(diffs)), "max_abs_feature_diff": float(diffs.max()),
+                    "images_with_any_diff": int((diffs > 0).sum())}
+    v1 = ROOT / "redteam/hardening/v1_original_inputs/reference_scores_test.json"
+    if v1.exists():
+        prev = json.loads(v1.read_text())["experiments"]
+        equality["reference_scores_unchanged"] = all(
+            prev[e]["results"][m] == ref["experiments"][e]["results"][m]
+            for e in prev for m in prev[e]["results"])
+    log(f"PNG re-encoding check: {equality}")
+
     summary = {"seeds": seed_info, "bootstrap": effects, "candidates": results,
-               "reference_test": headline(ref, "prism")}
+               "reference_test": headline(ref, "prism"), "png_reencoding_check": equality}
     (OUT / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     log("done")
 

@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -38,18 +39,28 @@ from data.genimage import (  # noqa: E402
     iter_test,
     iter_train,
     load_dev_split,
+    test_shards,
+    train_shards,
 )
 from method.prism_features import extract_prism_features  # noqa: E402
 
 VARIANTS = [("both", "prism"), ("magnitude", "prism_magnitude_only"), ("phase", "prism_phase_only")]
 
 
+def shard_fingerprint(data_root: Path) -> str:
+    """Identify the exact input shards (name + size) the cache was built from."""
+    parts = [f"{p.name}:{p.stat().st_size}" for p in train_shards(data_root) + test_shards(data_root)]
+    return hashlib.sha256("|".join(parts).encode()).hexdigest()
+
+
 def extract_features(data_root: Path, n_bins: int, cache: Path) -> dict[str, np.ndarray]:
+    fingerprint = shard_fingerprint(data_root)
     if cache.exists():
         loaded = dict(np.load(cache, allow_pickle=False))
-        if int(loaded["n_bins"]) == n_bins:
+        if int(loaded["n_bins"]) == n_bins and str(loaded.get("fingerprint", "")) == fingerprint:
             print(f"using cached features {cache}")
             return loaded
+        print(f"cache {cache} does not match the current inputs; re-extracting")
     train_ids, train_x, train_y = [], [], []
     for rec in tqdm(iter_train(data_root), desc="extract train", unit="img", mininterval=30):
         train_ids.append(rec.sample_id)
@@ -61,6 +72,7 @@ def extract_features(data_root: Path, n_bins: int, cache: Path) -> dict[str, np.
         test_x.append(extract_prism_features(rec.image, n_bins=n_bins))
     arrays = {
         "n_bins": np.asarray(n_bins),
+        "fingerprint": np.asarray(fingerprint),
         "train_ids": np.asarray(train_ids),
         "train_x": np.vstack(train_x),
         "train_y": np.asarray(train_y, dtype=np.int64),

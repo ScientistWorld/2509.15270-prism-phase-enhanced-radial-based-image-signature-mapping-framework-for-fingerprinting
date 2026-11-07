@@ -7,4 +7,4 @@ Improve black-box source attribution of AI-generated images on Tiny GenImage fro
 - lightweight non-linear or regularised classifiers on compact descriptors
 - class-imbalance handling, since half the data is real
 
-Out of scope: generator internals, prompts, paid APIs, watermark keys, large pretrained visual encoders that replace the compact fingerprint, using held-out test labels from any source, or exploiting file order or metadata instead of image content.
+Out of scope: generator internals, prompts, paid APIs, watermark keys, large pretrained visual encoders that replace the compact fingerprint, using held-out test labels from any source, or exploiting file order, container or metadata instead of image content. Dataset-assembly artefacts are reviewed as shortcuts, not progress: JPEG compression traces present only in the real images, and image size, which identifies several generators. See `scoring/CONSTRAINTS.md`.
