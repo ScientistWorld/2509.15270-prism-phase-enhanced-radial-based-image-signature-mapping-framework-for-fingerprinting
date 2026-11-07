@@ -1,0 +1,61 @@
+{
+  "slice": "test",
+  "n_samples": 7000,
+  "experiments": {
+    "genimage_tiny_attribution": {
+      "results": {
+        "prism": {
+          "accuracy": 88.3,
+          "balanced_accuracy": 81.34642857142858,
+          "precision_weighted": 88.07468748919378,
+          "f1_weighted": 88.11372647121352,
+          "f1_macro": 82.69567124087155,
+          "worst_class_recall": 56.2
+        },
+        "prism_magnitude_only": {
+          "accuracy": 86.44285714285714,
+          "balanced_accuracy": 78.375,
+          "precision_weighted": 86.0542737548902,
+          "f1_weighted": 86.144144481306,
+          "f1_macro": 79.72928833289092,
+          "worst_class_recall": 58.4
+        },
+        "prism_phase_only": {
+          "accuracy": 56.68571428571428,
+          "balanced_accuracy": 27.90714285714286,
+          "precision_weighted": 46.38736918056337,
+          "f1_weighted": 46.13960577301652,
+          "f1_macro": 27.341420857193032,
+          "worst_class_recall": 0.0
+        }
+      }
+    },
+    "genimage_tiny_binary": {
+      "results": {
+        "prism": {
+          "accuracy": 95.22857142857143,
+          "precision_weighted": 95.32809342046014,
+          "f1_weighted": 95.22595096279787,
+          "worst_class_recall": 92.88571428571429
+        },
+        "prism_magnitude_only": {
+          "accuracy": 94.55714285714286,
+          "precision_weighted": 94.68197883474441,
+          "f1_weighted": 94.55333853084119,
+          "worst_class_recall": 91.91428571428571
+        },
+        "prism_phase_only": {
+          "accuracy": 61.55714285714286,
+          "precision_weighted": 70.97104492314074,
+          "f1_weighted": 56.69752229691404,
+          "worst_class_recall": 28.057142857142857
+        }
+      }
+    }
+  },
+  "_failed_methods": {},
+  "_prediction_files": [
+    "/home/user/outputs/prism_predictions.csv"
+  ],
+  "_skipped_files": []
+}

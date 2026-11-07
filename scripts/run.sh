@@ -8,6 +8,9 @@
 set -euo pipefail
 
 cd /home/user
+# CPU jobs get one core; native thread pools otherwise spawn one spinning thread
+# per node core (gradient boosting stalled for 45+ min in the first attempt).
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 
 echo "== 1. export hidden test inputs"
 if [[ ! -f eval/test/labels.csv || $(ls data/downloads/tiny-genimage/test/test-*.parquet 2>/dev/null | wc -l) -ne 4 ]]; then

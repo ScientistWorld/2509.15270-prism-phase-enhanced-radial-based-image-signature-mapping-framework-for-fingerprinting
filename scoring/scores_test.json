@@ -1,53 +1,76 @@
 {
   "slice": "test",
+  "n_samples": 7000,
   "experiments": {
     "genimage_tiny_attribution": {
       "results": {
+        "majority_baseline": {
+          "accuracy": 50.0,
+          "balanced_accuracy": 12.5,
+          "precision_weighted": 25.0,
+          "f1_weighted": 33.33333333333333,
+          "f1_macro": 8.333333333333332,
+          "worst_class_recall": 0.0
+        },
         "prism": {
-          "accuracy": 88.75,
-          "balanced_accuracy": 81.75892857142857,
-          "precision_weighted": 88.49847537582882,
-          "recall_weighted": 88.75,
-          "f1_weighted": 88.56437765516753,
-          "f1_macro": 83.10284414261648,
-          "worst_class_recall": 57.99999999999999,
-          "feature_count": 384.0
+          "accuracy": 88.3,
+          "balanced_accuracy": 81.34642857142858,
+          "precision_weighted": 88.07468748919378,
+          "f1_weighted": 88.11372647121352,
+          "f1_macro": 82.69567124087155,
+          "worst_class_recall": 56.2
         },
         "prism_magnitude_only": {
-          "accuracy": 86.64285714285714,
-          "balanced_accuracy": 78.28571428571429,
-          "precision_weighted": 86.194952300606,
-          "recall_weighted": 86.64285714285714,
-          "f1_weighted": 86.3004599903387,
-          "f1_macro": 79.74847072415484,
-          "worst_class_recall": 57.49999999999999,
-          "feature_count": 192.0
+          "accuracy": 86.44285714285714,
+          "balanced_accuracy": 78.375,
+          "precision_weighted": 86.0542737548902,
+          "f1_weighted": 86.144144481306,
+          "f1_macro": 79.72928833289092,
+          "worst_class_recall": 58.4
         },
         "prism_phase_only": {
-          "accuracy": 57.25,
-          "balanced_accuracy": 28.883928571428573,
-          "precision_weighted": 44.90973771919095,
-          "recall_weighted": 57.25,
-          "f1_weighted": 46.52936015619588,
-          "f1_macro": 28.01546534557393,
-          "worst_class_recall": 0.0,
-          "feature_count": 192.0
+          "accuracy": 56.68571428571428,
+          "balanced_accuracy": 27.90714285714286,
+          "precision_weighted": 46.38736918056337,
+          "f1_weighted": 46.13960577301652,
+          "f1_macro": 27.341420857193032,
+          "worst_class_recall": 0.0
         }
       }
     },
     "genimage_tiny_binary": {
       "results": {
+        "majority_baseline": {
+          "accuracy": 50.0,
+          "precision_weighted": 25.0,
+          "f1_weighted": 33.33333333333333,
+          "worst_class_recall": 0.0
+        },
         "prism": {
-          "accuracy": 95.35714285714286,
-          "balanced_accuracy": 95.35714285714285,
-          "precision_weighted": 95.4521285298256,
-          "recall_weighted": 95.35714285714286,
-          "f1_weighted": 95.35471593322225,
-          "f1_macro": 95.35471593322225,
-          "worst_class_recall": 93.07142857142857,
-          "feature_count": 384.0
+          "accuracy": 95.22857142857143,
+          "precision_weighted": 95.32809342046014,
+          "f1_weighted": 95.22595096279787,
+          "worst_class_recall": 92.88571428571429
+        },
+        "prism_magnitude_only": {
+          "accuracy": 94.55714285714286,
+          "precision_weighted": 94.68197883474441,
+          "f1_weighted": 94.55333853084119,
+          "worst_class_recall": 91.91428571428571
+        },
+        "prism_phase_only": {
+          "accuracy": 61.55714285714286,
+          "precision_weighted": 70.97104492314074,
+          "f1_weighted": 56.69752229691404,
+          "worst_class_recall": 28.057142857142857
         }
       }
     }
-  }
+  },
+  "_failed_methods": {},
+  "_prediction_files": [
+    "/home/user/outputs/baseline_predictions.csv",
+    "/home/user/outputs/prism_predictions.csv"
+  ],
+  "_skipped_files": []
 }
