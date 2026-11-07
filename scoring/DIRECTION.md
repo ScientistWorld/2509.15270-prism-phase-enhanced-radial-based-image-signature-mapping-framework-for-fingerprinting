@@ -1,5 +1,10 @@
 # Research Direction
 
-Future work in this gym should stay within black-box image provenance using compact image-level representations. Valid improvements include better summary representations, alternative normalization, lightweight classifiers, robust split handling, and additional public benchmark coverage.
+Improve black-box source attribution of AI-generated images on Tiny GenImage from compact image-level representations. The reference reaches about 88% accuracy, but its worst generator classes (SD1.5 and Wukong, which share the same latent-diffusion backbone and resolution) stay near 55-60% recall. Real-vs-fake detection is about 95%. Promising directions:
 
-Out-of-scope changes include using generator internals, watermark keys, prompts, paid APIs, or large pretrained visual encoders to bypass the compact black-box fingerprinting problem.
+- richer but still compact frequency-domain summaries (other radial or angular aggregations, cross-channel statistics, bin counts)
+- better normalisation, and robustness to resolution and JPEG differences between sources
+- lightweight non-linear or regularised classifiers on compact descriptors
+- class-imbalance handling, since half the data is real
+
+Out of scope: generator internals, prompts, paid APIs, watermark keys, large pretrained visual encoders that replace the compact fingerprint, using held-out test labels from any source, or exploiting file order or metadata instead of image content.

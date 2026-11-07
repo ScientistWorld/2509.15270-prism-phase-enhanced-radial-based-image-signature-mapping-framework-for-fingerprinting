@@ -1,0 +1,7 @@
+{
+  "name": "shortcut_empty_output",
+  "returncode": 1,
+  "error": [
+    "RuntimeError: No prediction rows selected for test slice from [PosixPath('/home/user/redteam/shortcut_empty_output/predictions.csv')]"
+  ]
+}

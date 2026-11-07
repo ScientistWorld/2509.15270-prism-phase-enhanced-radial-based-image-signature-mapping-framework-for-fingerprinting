@@ -1,11 +1,13 @@
 # Experiment Overview
 
-## genimage_tiny_attribution
+Both experiments are scored from one artifact: a source prediction for every dev image (visible scorer) and every held-out test image (hidden scorer). Ground truth, test set, label space and metric definitions are fixed by `eval/`.
 
-Tests source attribution on a public benchmark containing real images and images produced by multiple generators. The experiment asks whether the system can recover the image source from image content alone on held-out validation data.
+## genimage_tiny_attribution (weight 0.65)
 
-All submitted variants for this experiment are scored through the same prediction-artifact interface, so future agents can compare source-attribution performance without changing the benchmark.
+Tests source attribution on a public benchmark that contains real photographs and images from seven generators. It asks whether a system trained on the published training split can recover each held-out image's source from the image alone. Half of the test images are real and the seven generators have 500 images each. Accuracy and weighted F1 measure the overall result, and balanced accuracy, macro F1 and worst-class recall check that no generator is sacrificed.
 
-## genimage_tiny_binary
+Reference baselines in the score files: the paper's method with only one of its two feature families (ablations, to check that combining them helps) and a majority-class predictor (floor).
 
-Tests real-vs-fake detection on the same benchmark split. The experiment asks whether a submission can distinguish authentic images from generated images on held-out validation data.
+## genimage_tiny_binary (weight 0.35)
+
+Tests real-vs-fake detection on the same held-out images. It is derived from the source prediction (real vs any generator) and is not trained or submitted separately. It checks that the fine-grained attribution task also solves the conventional detection task. The test is balanced (3,500 / 3,500), so accuracy and balanced accuracy coincide, and worst-class recall guards against trading real recall for fake recall.

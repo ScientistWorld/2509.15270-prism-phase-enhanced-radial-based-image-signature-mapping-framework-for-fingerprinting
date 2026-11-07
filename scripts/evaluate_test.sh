@@ -1,30 +1,13 @@
 #!/bin/bash
-# Held-out test-slice evaluation entry point.
+# Hidden test-slice scorer -> scoring/scores_test.json.
 #
-# Mirrors scripts/evaluate.sh: pass a prediction CSV as the first argument,
-# or omit it to score the prediction CSV found under outputs/. The script writes
-# scoring/scores_test.json and, when scoring/scores_train.json exists, scores
-# exactly the method entries that appeared in the train-slice report.
+# With no arguments it scores every method found in any *.csv under outputs/
+# that has the columns method,sample_id,prediction (see briefing/evaluation.md).
+# Optional arguments: explicit prediction CSV paths instead of discovery.
+# Ground truth, test size and metrics are fixed inside eval/test/.
 
 set -euo pipefail
 
-cd /home/user
-
+cd "$(dirname "$0")/.."
 mkdir -p scoring
-
-if [[ $# -gt 0 ]]; then
-  python eval/test/evaluate.py "$@" \
-    --output scoring/scores_test.json \
-    --train-scores scoring/scores_train.json
-else
-  mapfile -t CANDIDATES < <(find outputs -maxdepth 1 -type f -name '*predictions.csv' | sort)
-  if [[ "${#CANDIDATES[@]}" -ne 1 ]]; then
-    printf 'Expected exactly one prediction CSV under outputs/, found %s:\n' "${#CANDIDATES[@]}" >&2
-    printf '  %s\n' "${CANDIDATES[@]}" >&2
-    exit 1
-  fi
-  PREDICTIONS="${CANDIDATES[0]}"
-  python eval/test/evaluate.py "$PREDICTIONS" \
-    --output scoring/scores_test.json \
-    --train-scores scoring/scores_train.json
-fi
+python3 eval/test/evaluate.py "$@" --output scoring/scores_test.json

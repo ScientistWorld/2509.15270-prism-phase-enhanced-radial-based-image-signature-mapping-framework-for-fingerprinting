@@ -1,26 +1,14 @@
 #!/bin/bash
-# Reproduce the paper's results end-to-end.
+# Reproduce the paper's Tiny GenImage results end-to-end.
 #
-# This script runs inside the compute container and should call
-# scripts/baseline.sh and scripts/method.sh to run baselines and
-# the paper's method, each of which calls scripts/evaluate.sh.
-#
-# Assumes:
-#   - Container is built (environment/container.sif)
-#   - Data and models are downloaded (via scripts/download.sh)
-#   - Working directory is /home/user
-#
-# This is the "gold standard" reproduction — 
-# You do not need to run this, but keep this in good shape
-# so other agents can easily run a full loop of reproduction and get the paper's numbers.
+# Assumes scripts/download.sh has populated data/downloads/ (training shards
+# and the label-free test shards) and the container from environment/ is used.
+# Runs PRISM (+ ablations) and the majority baseline, then scores everything
+# under outputs/ with scripts/evaluate.sh.
 
 set -euo pipefail
 
-cd /home/user
-
+cd "$(dirname "$0")/.."
 bash scripts/method.sh
 bash scripts/baseline.sh
-
-bash scripts/evaluate.sh outputs/prism_predictions.csv outputs/baseline_predictions.csv
-bash scripts/evaluate_train.sh outputs/prism_predictions.csv outputs/baseline_predictions.csv
-bash scripts/evaluate_test.sh outputs/prism_predictions.csv outputs/baseline_predictions.csv
+bash scripts/evaluate.sh

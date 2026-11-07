@@ -1,0 +1,27 @@
+{
+  "name": "shortcut_index_position",
+  "returncode": 0,
+  "prism": {
+    "genimage_tiny_attribution": {
+      "accuracy": 100.0,
+      "balanced_accuracy": 100.0,
+      "precision_weighted": 100.0,
+      "recall_weighted": 100.0,
+      "f1_weighted": 100.0,
+      "f1_macro": 100.0,
+      "worst_class_recall": 100.0,
+      "feature_count": 384.0
+    },
+    "genimage_tiny_binary": {
+      "accuracy": 100.0,
+      "balanced_accuracy": 100.0,
+      "precision_weighted": 100.0,
+      "recall_weighted": 100.0,
+      "f1_weighted": 100.0,
+      "f1_macro": 100.0,
+      "worst_class_recall": 100.0,
+      "feature_count": 384.0
+    }
+  },
+  "rank_delta": 46.96389479181962
+}

@@ -1,0 +1,7 @@
+{
+  "name": "shortcut_null_feature_count",
+  "returncode": 1,
+  "error": [
+    "ValueError: could not convert string to float: 'null'"
+  ]
+}

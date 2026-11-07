@@ -1,64 +1,57 @@
 #!/bin/bash
-# Download all data and models needed for this environment.
+# Download all data needed for this environment (Tiny GenImage, public HF mirror).
 #
-# Run on a node with internet access BEFORE building the container
-# or submitting compute jobs.
-#
-# This script should be idempotent — safe to run multiple times.
-# It should skip files that already exist.
-#
-# Update the storage estimate below as you add downloads.
+# Run on a node with internet access BEFORE submitting compute jobs.
+# Idempotent: every fetch is skipped when its target already exists.
 #
 # Estimated total download size: 8.36 GB
-# Estimated disk usage after download: 8.36 GB
+# Estimated disk usage after download: ~10.1 GB (raw shards + 1.75 GB label-free test copy)
 #
-# This script downloads to workspace-local paths so a fresh clone can
-# reproduce the benchmark without relying on machine-specific caches.
+# Layout produced:
+#   data/downloads/tiny-genimage/data/train-*.parquet   published training split (labelled)
+#   eval/test/downloads/validation-*.parquet            published validation split (labelled,
+#                                                        hidden side of the benchmark)
+#   data/downloads/tiny-genimage/test/test-*.parquet    the same 7,000 validation images as
+#                                                        label-free test inputs (sample_id + bytes)
+# The last step needs a Python with pyarrow (installed by environment/setup.sh);
+# when the host python3 lacks it, `uv run --with pyarrow` is used instead.
 
 set -euo pipefail
 
-cd /home/user
+cd "$(dirname "$0")/.."
 
-mkdir -p data/downloads/tiny-genimage/data
+REVISION="89c4fe9efd0ebc7ce5c7641ef57d578ccd639c69"
+BASE_URL="https://huggingface.co/datasets/TheKernel01/Tiny-GenImage/resolve/${REVISION}"
+TRAIN_DIR="data/downloads/tiny-genimage"
+HIDDEN_DIR="eval/test/downloads"
 
-BASE_URL="https://huggingface.co/datasets/TheKernel01/Tiny-GenImage/resolve/main"
-
-download_one() {
-  local rel="$1"
-  local out="data/downloads/tiny-genimage/$rel"
-  local tmp="${out}.part"
+fetch() {
+  local rel="$1" out="$2"
+  [ -e "$out" ] && return 0
   mkdir -p "$(dirname "$out")"
-  if [ -e "$out" ]; then
-    return 0
-  fi
-  curl -L -C - "$BASE_URL/$rel" -o "$tmp"
-  mv "$tmp" "$out"
+  curl -fL --retry 5 -C - "$BASE_URL/$rel" -o "${out}.part"
+  mv "${out}.part" "$out"
 }
 
-[ -e data/downloads/tiny-genimage/README.md ] || \
-  download_one README.md
+fetch README.md "$TRAIN_DIR/README.md"
 
-download_many() {
-  local running=0
-  for rel in "$@"; do
-    download_one "$rel" &
-    running=$((running + 1))
-    if [ "$running" -ge 4 ]; then
-      wait -n
-      running=$((running - 1))
-    fi
-  done
-  wait
-}
-
-files=()
-
+pids=()
 for i in $(seq -w 0 13); do
-  files+=("data/train-000${i}-of-00014.parquet")
+  fetch "data/train-000${i}-of-00014.parquet" "$TRAIN_DIR/data/train-000${i}-of-00014.parquet" &
+  pids+=($!)
+  if [ "${#pids[@]}" -ge 4 ]; then wait "${pids[0]}"; pids=("${pids[@]:1}"); fi
 done
+for pid in "${pids[@]}"; do wait "$pid"; done
 
-for i in $(seq -w 0 3); do
-  files+=("data/validation-0000${i}-of-00004.parquet")
-done
-
-download_many "${files[@]}"
+shopt -s nullglob
+test_shards=("$TRAIN_DIR"/test/test-*-of-00004.parquet)
+if [ "${#test_shards[@]}" -ne 4 ]; then
+  for i in 0 1 2 3; do
+    fetch "data/validation-0000${i}-of-00004.parquet" "$HIDDEN_DIR/validation-0000${i}-of-00004.parquet"
+  done
+  if python3 -c "import pyarrow" >/dev/null 2>&1; then
+    python3 eval/test/export_inputs.py
+  else
+    uv run --no-project --with pyarrow python3 eval/test/export_inputs.py
+  fi
+fi

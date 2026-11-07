@@ -1,7 +1,9 @@
 # Constraints
 
-Scientists should keep the Tiny GenImage dataset and published train/validation split fixed. Evaluation must use the prediction CSV interface consumed by `scripts/evaluate.sh`.
+Hold fixed:
 
-The primary resource constraint is representation size. Methods that improve accuracy by using very large image embeddings or end-to-end vision backbones are outside the intended comparison unless they report the increased feature count and are treated as a different resource regime.
-
-Evaluation code must remain method-agnostic and must not import from `method/`. Data-loading utilities may be shared from `data/`, but the scorer must read method outputs rather than rerunning a method internally.
+- **Data and split.** Tiny GenImage at the pinned revision in `scripts/download.sh`. Train only on the published training split, and when producing dev predictions, only on its non-dev part (`data/splits/dev.csv`). The 7,000 test images are inputs only. Their labels are hidden and must not be recovered from any external copy of the benchmark, from file order, or from anything other than the image content.
+- **Interface.** One integer source label (0..8) per image in a CSV under `outputs/` with `method,sample_id,prediction`, scored by `scripts/evaluate_train.sh` / `scripts/evaluate_test.sh`. Real-vs-fake is derived from that label, and other columns are ignored.
+- **Evaluation code.** `eval/` is method-agnostic and must not import `method/`. Scorers read predictions only and never retrain.
+- **Black-box setting.** Use no generator internals, prompts, generator weights, watermark keys or generation APIs.
+- **Compact image-level representation (policy, reviewed, not scored).** The paper's claim is attribution from a compact (384-value) hand-crafted descriptor with a linear classifier, at less than 0.1 s per image on a CPU. Methods that swap in large pretrained vision backbones, or feature sets orders of magnitude larger, are a different resource regime. They are outside the intended comparison unless reported as such. The representation size cannot be verified from predictions, so it is not part of the score.

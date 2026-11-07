@@ -1,14 +1,14 @@
 {
   "experiments": {
     "genimage_tiny_attribution": {
-      "description": "Tiny GenImage source attribution with the benchmark train/validation split used in Table 1.",
+      "description": "Tiny GenImage source attribution (Real + 7 generators) on the published split: fit on the 28,000 training images, predict the 7,000 held-out validation images (paper Table 1). Scored against hidden labels by eval/test/.",
       "weight": 0.65,
       "primary_metric": "accuracy",
       "metrics": {
         "accuracy": {
           "higher_is_better": true,
           "coefficient": 1.0,
-          "description": "Overall source-attribution accuracy on the Tiny GenImage validation slice."
+          "description": "Overall source-attribution accuracy (%) on the 7,000 held-out images (half are real)."
         },
         "balanced_accuracy": {
           "higher_is_better": true,
@@ -19,11 +19,6 @@
           "higher_is_better": true,
           "coefficient": 0.3,
           "description": "Weighted precision for source attribution, retaining continuity with the original aggregate classification report."
-        },
-        "recall_weighted": {
-          "higher_is_better": true,
-          "coefficient": 0.3,
-          "description": "Weighted recall for source attribution, retaining continuity with the original aggregate classification report."
         },
         "f1_weighted": {
           "higher_is_better": true,
@@ -38,101 +33,79 @@
         "worst_class_recall": {
           "higher_is_better": true,
           "coefficient": 0.4,
-          "description": "Lowest per-class recall, included to expose methods that abandon a difficult source class."
-        },
-        "feature_count": {
-          "higher_is_better": false,
-          "coefficient": -0.2,
-          "description": "Descriptor dimensionality, used as a machine-independent compactness constraint."
+          "description": "Lowest per-source recall (%), exposing methods that abandon a difficult generator."
         }
       },
       "results": {
         "prism": {
           "type": "proposed",
           "accuracy": 88.47,
-          "f1_weighted": 88.25,
-          "feature_count": 384
+          "f1_weighted": 88.25
         },
         "prism_magnitude_only": {
-          "type": "baseline",
-          "feature_count": 192
+          "type": "baseline"
         },
         "prism_phase_only": {
-          "type": "baseline",
-          "feature_count": 192
+          "type": "baseline"
         },
         "random_guess": {
           "type": "baseline",
           "accuracy": 12.5
         },
         "majority_baseline": {
-          "type": "baseline",
-          "feature_count": 0
+          "type": "baseline"
         }
-      }
+      },
+      "setup_note": "Paper numbers are for the same public benchmark and split (Table 1: GenImage, 8 classes, 28k/7k). The hidden test is the full 7,000-image published validation split; the visible dev slice is a fixed 20% of the training split. No scaling of data or model."
     },
     "genimage_tiny_binary": {
-      "description": "Tiny GenImage real-vs-fake classification on the same split, testing whether source attribution features also support binary synthetic-image detection.",
+      "description": "Tiny GenImage real-vs-fake detection on the same images, derived by the evaluator from the source prediction (real vs any generator) - the paper's 'without retraining for the specific task' setting (Table 2).",
       "weight": 0.35,
       "primary_metric": "accuracy",
       "metrics": {
         "accuracy": {
           "higher_is_better": true,
           "coefficient": 1.0,
-          "description": "Overall real-vs-fake accuracy on the Tiny GenImage validation slice."
-        },
-        "balanced_accuracy": {
-          "higher_is_better": true,
-          "coefficient": 0.6,
-          "description": "Average of real-image and fake-image recall, guarding against single-side binary shortcuts."
+          "description": "Real-vs-fake accuracy (%) on the 7,000 held-out images (balanced, so it equals balanced accuracy)."
         },
         "precision_weighted": {
           "higher_is_better": true,
           "coefficient": 0.3,
           "description": "Weighted precision for the binary real-vs-fake task."
         },
-        "recall_weighted": {
-          "higher_is_better": true,
-          "coefficient": 0.3,
-          "description": "Weighted recall for the binary real-vs-fake task."
-        },
         "f1_weighted": {
           "higher_is_better": true,
           "coefficient": 0.7,
-          "description": "Weighted F1 for the binary real-vs-fake task."
-        },
-        "f1_macro": {
-          "higher_is_better": true,
-          "coefficient": 0.5,
-          "description": "Unweighted macro F1, exposing methods that trade away either real or fake recall."
+          "description": "Weighted F1 (%) for real-vs-fake; with balanced classes it equals macro F1."
         },
         "worst_class_recall": {
           "higher_is_better": true,
           "coefficient": 0.4,
-          "description": "Lower of real-image recall and fake-image recall."
-        },
-        "feature_count": {
-          "higher_is_better": false,
-          "coefficient": -0.2,
-          "description": "Descriptor dimensionality, used as a machine-independent compactness constraint."
+          "description": "Lower of real-image recall and fake-image recall (%)."
         }
       },
       "results": {
         "prism": {
           "type": "proposed",
           "accuracy": 95.06,
-          "f1_weighted": 95.05,
-          "feature_count": 384
+          "f1_weighted": 95.05
         },
         "genimage_paper_detector": {
           "type": "baseline",
           "accuracy": 82.2
         },
         "majority_baseline": {
-          "type": "baseline",
-          "feature_count": 0
+          "type": "baseline"
+        },
+        "prism_magnitude_only": {
+          "type": "baseline"
+        },
+        "prism_phase_only": {
+          "type": "baseline"
         }
-      }
+      },
+      "setup_note": "Binary labels are not a separate submission: prediction 0 = real, any generator label = fake. Test is balanced 3,500/3,500."
     }
-  }
+  },
+  "_note": "Rank = sum over experiments of weight x sum over metrics of coefficient x (score - reference score). All scored metrics are percentages in [0,100] recomputed from predictions; a failed submission scores 0 on every metric. Representation size is a policy constraint (scoring/CONSTRAINTS.md), not a scored metric, because it cannot be verified from predictions."
 }

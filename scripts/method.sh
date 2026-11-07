@@ -1,17 +1,12 @@
 #!/bin/bash
-# Run the paper's proposed method.
-#
-# This script trains/runs the paper's method using code in method/.
+# Run the paper's proposed method (PRISM) and its magnitude-only / phase-only
+# ablations; writes outputs/prism_predictions.csv.
 #
 # Usage:
-#   bash scripts/method.sh
+#   bash scripts/method.sh [extra args for method/run_prism.py]
 
 set -euo pipefail
 
-cd /home/user
-
+cd "$(dirname "$0")/.."
 mkdir -p outputs
-
-python method/run_prism.py "$@"
-
-bash scripts/evaluate.sh outputs/prism_predictions.csv
+python3 method/run_prism.py "$@"
