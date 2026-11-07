@@ -1,8 +1,6 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends.
-action: pending
+action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: ""
+notes: "Resume hardening check with thread pools pinned to 1 (previous attempt stalled in HistGB via OpenMP oversubscription). Reference features are cached; reruns reference scoring, then audit variants/shortcuts/seeds/bootstrap/pre-hardening replays."
