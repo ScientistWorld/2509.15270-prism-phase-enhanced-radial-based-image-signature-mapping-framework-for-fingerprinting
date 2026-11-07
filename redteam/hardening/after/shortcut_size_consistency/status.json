@@ -1,0 +1,36 @@
+{
+  "name": "shortcut_size_consistency",
+  "rank_delta": 14.363211984523009,
+  "train": {
+    "genimage_tiny_attribution": {
+      "accuracy": 93.03571428571429,
+      "balanced_accuracy": 87.83928571428572,
+      "precision_weighted": 93.20786398963415,
+      "f1_weighted": 93.04196766479883,
+      "f1_macro": 87.83683866254957,
+      "worst_class_recall": 63.24999999999999
+    },
+    "genimage_tiny_binary": {
+      "accuracy": 99.98214285714286,
+      "precision_weighted": 99.982149232417,
+      "f1_weighted": 99.98214285657345,
+      "worst_class_recall": 99.96428571428572
+    }
+  },
+  "test": {
+    "genimage_tiny_attribution": {
+      "accuracy": 92.87142857142857,
+      "balanced_accuracy": 87.56785714285714,
+      "precision_weighted": 93.05784546186817,
+      "f1_weighted": 92.8267535721327,
+      "f1_macro": 87.46825344685956,
+      "worst_class_recall": 56.2
+    },
+    "genimage_tiny_binary": {
+      "accuracy": 99.97142857142858,
+      "precision_weighted": 99.97144488863506,
+      "f1_weighted": 99.9714285690962,
+      "worst_class_recall": 99.94285714285715
+    }
+  }
+}

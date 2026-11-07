@@ -1,5 +1,9 @@
 # Progress
 
+## Hardening (final iteration)
+
+See `HARDENING.md`. The scoring contract changed: methods write `method,sample_id,prediction` CSVs under `outputs/`; `scripts/evaluate_train.sh` scores the visible dev slice (`data/splits/dev.csv`, 20% of the training split) and `scripts/evaluate_test.sh` scores the 7,000 held-out images against hidden labels in `eval/test/labels.csv`. Real-vs-fake is derived from the source prediction. Feature count is no longer scored. Final reference: test 88.30 / 95.23, dev 88.43 / 94.86. Some numbers below refer to the pre-hardening setup.
+
 ## What Works
 
 - Paper analysis is complete enough to implement the core PRISM experiment.

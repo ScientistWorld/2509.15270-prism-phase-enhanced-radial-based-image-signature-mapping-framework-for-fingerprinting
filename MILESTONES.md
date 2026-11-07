@@ -4,6 +4,11 @@
 
 ## Progress Log
 
+### [2026-11-07] - secondary_claims (hardening)
+- Hidden test now scores all 7,000 published validation images against labels kept only in `eval/test/`; methods get label-free, hash-ordered, PNG-re-encoded test inputs.
+- Reference rerun from final code: attribution 88.30 (paper 88.47), real-vs-fake 95.23 (paper 95.06); ablation order and majority floor preserved.
+- Repaired shortcuts (visible labels, row-index leak, forged truth, coverage drop, feature-count, impossible values, duplicates, container format) now fail or gain nothing; image-size cue left open and documented in `HARDENING.md`.
+
 ### [2026-05-27 02:24] - secondary_claims
 - Completed final verification without requiring another compute submission.
 - Confirmed validation, shell syntax, Python syntax, method/eval separation, and verified download URLs.

@@ -1,30 +1,17 @@
 #!/bin/bash
-# Hardening verification job (CPU). Steps are idempotent, so a re-run resumes.
-#   1. hidden side: label-free test inputs + hidden labels from the published validation split
-#   2. visible dev slice (20% of the training split)
-#   3. reference reproduction: PRISM + ablations + majority baseline, scored by both scorers
-#   4. audit: better/weaker variants, shortcuts, seeds, bootstrap, pre-hardening replays
+# Reference reproduction job (CPU, ~70 min on one core).
+#
+# Runs inside the container with the workspace at /home/user and no internet.
+# Assumes scripts/download.sh has populated data/downloads/ (training shards and
+# the label-free test shards). Runs PRISM + its magnitude-only / phase-only
+# ablations and the majority baseline, then scores every method under outputs/
+# on the dev slice (scores_train.json) and the hidden test (scores_test.json).
 
 set -euo pipefail
 
 cd /home/user
-# CPU jobs get one core; native thread pools otherwise spawn one spinning thread
-# per node core (gradient boosting stalled for 45+ min in the first attempt).
+# CPU jobs get one core; keep native thread pools from oversubscribing it.
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 
-echo "== 1. export hidden test inputs (label-free, lossless PNG of decoded pixels)"
-if [[ ! -f eval/test/labels.csv || $(ls data/downloads/tiny-genimage/test/test-*.parquet 2>/dev/null | wc -l) -ne 4 ]]; then
-  python3 eval/test/export_inputs.py
-fi
-# keep the features extracted from the original public test files for the
-# PNG re-encoding equality check; the method cache is fingerprinted and rebuilt
-if [[ -f outputs/cache/prism_features.npz && ! -f outputs/cache/prism_features.orig.npz ]]; then
-  mv outputs/cache/prism_features.npz outputs/cache/prism_features.orig.npz
-fi
-echo "== 2. dev split"
-python3 data/make_dev_split.py
-echo "== 3. reference reproduction"
+python3 data/make_dev_split.py      # verifies data/splits/dev.csv against the data
 bash scripts/reproduce.sh
-echo "== 4. hardening audit"
-python3 redteam/hardening/after_scores.py
-echo "== done"
