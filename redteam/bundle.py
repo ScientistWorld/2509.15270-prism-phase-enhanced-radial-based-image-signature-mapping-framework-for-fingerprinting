@@ -1,6 +1,7 @@
 """Run the audit as a single compute job; save every result immediately."""
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 import shutil
@@ -33,10 +34,11 @@ def restore():
     shutil.copyfile(AUDIT / 'artifacts/original_predictions.csv', ROOT / 'outputs/prism_predictions.csv')
 
 
-def main():
+def main(interface_only=False):
     summary = []
+    order = [name for name in ORDER if not name.startswith(('reference_seed', 'weaker_', 'better_'))] if interface_only else ORDER
     try:
-        for name in ORDER:
+        for name in order:
             folder = AUDIT / name
             if (folder / 'status.json').exists():
                 summary.append(json.loads((folder / 'status.json').read_text()))
@@ -57,7 +59,7 @@ def main():
             summary.append(item)
             (AUDIT / 'summary.json').write_text(json.dumps(summary, indent=2) + '\n')
             print(json.dumps(item), flush=True)
-            if name == 'reference_cached' and item.get('test_returncode') != 0:
+            if name == 'reference_cached' and item.get('test_returncode') != 0 and not interface_only:
                 # If the unmodified no-argument interface is broken, record
                 # the failure instead of repairing its process/environment.
                 break
@@ -66,4 +68,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--interface-only', action='store_true',
+                        help='Exercise inexpensive candidates despite the broken reference interface; do not train unscorable models.')
+    main(interface_only=parser.parse_args().interface_only)

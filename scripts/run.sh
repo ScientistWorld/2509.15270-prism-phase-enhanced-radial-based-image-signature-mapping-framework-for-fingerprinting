@@ -13,4 +13,4 @@ set -euo pipefail
 
 cd /home/user
 
-python redteam/bundle.py
+python redteam/bundle.py --interface-only

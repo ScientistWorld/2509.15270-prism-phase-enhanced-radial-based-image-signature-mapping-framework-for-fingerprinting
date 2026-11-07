@@ -17,3 +17,9 @@ Python environment, or process to make an otherwise broken test pass.
 After the job, compare raw metrics and literal weighted coefficient ranks;
 document ceilings, reproduction direction, seed spread, and paying shortcuts.
 Restore scripts/run.sh, scores, and method/baseline files before completion.
+
+The first job found that both immutable scripts fail on importing `eval` in
+the clean container. A second, interface-only job exercises the cheap shortcut
+methods and real majority baseline through the exact scripts. No model
+training is launched when the unchanged reference cannot be scored; quality
+variant and seed scripts remain available for the next iteration after repair.
