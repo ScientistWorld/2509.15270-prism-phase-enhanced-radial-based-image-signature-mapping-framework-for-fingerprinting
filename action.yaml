@@ -1,6 +1,4 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
-action: submit
-gpus: 0
-test: false
+action: done
 milestone: secondary_claims
-notes: "Final hardening check: re-export test inputs as lossless PNG of decoded pixels, full PRISM reference rerun from final code (fresh feature extraction), baseline, train/test scoring, audit incl. PNG feature-equality check, container/pixel-JPEG/resolution probes."
+notes: "Hardened: hidden labels only in eval/test (label-free, hash-ordered, PNG test inputs), strict validity, unverifiable feature_count dropped; better variants rank higher, repaired shortcuts fail or gain 0; reference 88.30/95.23 vs paper 88.47/95.06; image-size cue (+14.4) left open and documented in HARDENING.md."
