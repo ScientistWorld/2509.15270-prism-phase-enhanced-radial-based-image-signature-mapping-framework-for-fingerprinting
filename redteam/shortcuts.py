@@ -115,4 +115,5 @@ def run(name):
 if __name__ == '__main__':
     p = argparse.ArgumentParser()
     p.add_argument('name')
-    run(p.parse_args().name)
+    status = run(p.parse_args().name)
+    sys.exit(status.get('test_returncode', 1) or status.get('train_returncode', 1))

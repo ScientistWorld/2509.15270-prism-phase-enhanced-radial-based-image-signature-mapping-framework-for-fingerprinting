@@ -13,4 +13,9 @@ set -euo pipefail
 
 cd /home/user
 
-python redteam/bundle.py --interface-only
+bash scripts/method.sh
+bash scripts/baseline.sh
+
+bash scripts/evaluate.sh outputs/prism_predictions.csv outputs/baseline_predictions.csv
+bash scripts/evaluate_train.sh outputs/prism_predictions.csv outputs/baseline_predictions.csv
+bash scripts/evaluate_test.sh outputs/prism_predictions.csv outputs/baseline_predictions.csv

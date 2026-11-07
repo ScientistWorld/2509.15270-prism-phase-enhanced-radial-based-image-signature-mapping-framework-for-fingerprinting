@@ -34,7 +34,15 @@ def write_csv(path, rows):
 
 
 def original_rows():
-    return read_csv(AUDIT / 'artifacts/original_predictions.csv')
+    path = AUDIT / 'artifacts/original_predictions.csv'
+    if not path.exists():
+        # The audit may reuse the reference's legitimate trained outputs.
+        # On a fresh checkout, recreate them from visible method/data files;
+        # never reconstruct predictions from the archived hidden scores.
+        path.parent.mkdir(parents=True, exist_ok=True)
+        subprocess.run(['python', 'method/run_prism.py', '--output', str(path)],
+                       cwd=ROOT, check=True)
+    return read_csv(path)
 
 
 def rank(scores, proposed_only=True):

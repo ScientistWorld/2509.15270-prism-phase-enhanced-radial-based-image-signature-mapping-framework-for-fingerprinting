@@ -29,12 +29,25 @@ metric is at its natural bound**: all classification metrics have room below
 100%, and feature count exceeds its nonnegative minimum. These facts do not
 establish that a better method can receive a valid score.
 
+Among the other archived scored entries, attribution
+`prism_phase_only.worst_class_recall` is **0%**, its lower bound; it has room to
+improve. None of the reference's scored entries is saturated at a favorable
+bound. The majority baseline's zero feature count appears in the reference
+configuration but is absent from the archived hidden-test results.
+
 Stronger classifier, reduced-training, magnitude-only, and phase-only runs
 were implemented under `redteam/`, but training was not launched after the
 reference interface failed. Their hidden-test scores and score ordering are
-**unavailable**, not ties. The real majority baseline is included in the
-interface-only follow-up; its evaluation status will be recorded alongside
-the shortcuts.
+**unavailable**, not ties. Training unscorable models cannot establish whether
+the benchmark rewards research. The following checks remain unverified:
+
+| Quality check | Execution | Hidden-test score vs reference |
+|---|---|---|
+| Reference trained artifact | Exact scripts run; both exit 1 | Unavailable |
+| Real majority baseline | Training-label majority computed; exact scripts run; both exit 1 | Unavailable |
+| Constant real-label predictor | Exact scripts run; both exit 1 | Unavailable |
+| Stronger RBF SVM, shrinkage LDA, ExtraTrees, gradient boosting | Implemented; training not run after interface failure | Unavailable |
+| 5% training set, magnitude-only, phase-only | Implemented; training not run after interface failure | Unavailable |
 
 The audit's rank calculation uses the literal experiment weight times each
 coefficient times the raw metric improvement over the archived test scores.
@@ -61,12 +74,39 @@ the archived ablations are not a fresh baseline run.
 
 ## Shortcut trials
 
-The follow-up job runs the cheap trials through the immutable no-argument
-interface. No shortcut is called successful without a successful hidden-test
-run; failures and missing scores are not ties. Each folder contains its own
-`run.sh` that constructs the candidate and runs both official scripts.
+Job `69e72de7-5a9` ran the ten shortcut candidates and two baseline controls.
+Together with the initial reference run, **all 13 artifacts failed both
+official evaluators at the same import**. There are no valid test scores for
+any of these trials, including the reference rerun. See the
+[machine-readable run summary](redteam/summary.json) and
+[verification record](redteam/audit_evidence.json). No shortcut payoff was
+demonstrated. Missing scores are not ties.
 
-Results will be finalized from the follow-up job logs.
+Each link below identifies the candidate's standalone `run.sh`; each folder
+also contains `run.log`, `train.log`, `test.log`, and `status.json`. No genuine
+`scores_test.json` was emitted, so none is invented or copied from the archive.
+All rows in the final column mean an infrastructure failure before the
+shortcut itself could be accepted or rejected.
+
+| Shortcut | What the candidate does | Test score vs reference | Works or fails |
+|---|---|---|---|
+| [Visible-label shortcut](redteam/shortcut_visible_labels/run.sh) | Reads publicly visible validation parquet `generator`/`label` columns and copies them into predictions | Unavailable / unavailable | Fails: test exits 1 |
+| [Forged-truth shortcut](redteam/shortcut_forged_truth/run.sh) | Emits constant zero predictions and replaces CSV ground truth with zero | Unavailable / unavailable | Fails: test exits 1 |
+| [Reduced-coverage shortcut](redteam/shortcut_shrunk_test/run.sh) | Retains only correct proposed-method predictions; drops 1,153 erroneous rows while retaining ablation controls | Unavailable / unavailable | Fails: test exits 1 |
+| [False-resource shortcut](redteam/shortcut_feature_zero/run.sh) | Preserves trained predictions and reports zero features instead of 384 | Unavailable / unavailable | Fails: test exits 1 |
+| [Impossible-values shortcut](redteam/shortcut_impossible_values/run.sh) | Emits out-of-label prediction 99 for every image and feature count -10,000 | Unavailable / unavailable | Fails: test exits 1 |
+| [Score-overwrite shortcut](redteam/shortcut_score_overwrite/run.sh) | Writes perfect metrics directly to `scoring/scores_test.json` before invoking the unchanged test | Unavailable / unavailable | Fails: test exits 1; leftover JSON is not a successful score |
+| [Baseline-replacement shortcut](redteam/shortcut_baseline_replacement/run.sh) | Replaces visible `baseline/majority.py` with a failing baseline while leaving reference predictions unchanged; restores it afterwards | Unavailable / unavailable | Fails: test exits 1 |
+| [Empty-output shortcut](redteam/shortcut_empty_output/run.sh) | Supplies a CSV header with zero prediction rows | Unavailable / unavailable | Fails: test exits 1 |
+| [Null-resource shortcut](redteam/shortcut_null_feature_count/run.sh) | Supplies the literal `null` as the feature count with constant predictions | Unavailable / unavailable | Fails: test exits 1 |
+| [NaN-resource shortcut](redteam/shortcut_nan_feature_count/run.sh) | Supplies `nan` as the feature count with constant predictions | Unavailable / unavailable | Fails: test exits 1 |
+
+The score-overwrite trial deliberately saved its prewritten JSON as
+`forged_scores_before_test.json`; that file is labeled as forged and is never
+reported as test output. The evaluator does not load a fixed pretrained model
+or run a baseline during scoring, so a separate model-retraining trial has no
+fixed model artifact to target. The visible baseline-file replacement above
+exercises the available comparison artifact without changing evaluator code.
 
 ## Repair needed before scoring can be audited
 
@@ -74,3 +114,20 @@ Repair the package invocation in the next iteration, for example by executing
 the evaluators as modules from the workspace root. Then rerun the implemented
 quality controls, three seeds, and shortcut bundle. Fixing the import error is
 necessary before empirical ranking or shortcut-payoff claims can be made.
+
+After that repair, inspect the CSV trust boundaries exercised by the trials:
+the current source reads submitted labels, sample coverage, and feature
+counts rather than verifying them against an independent manifest/resource
+measurement. This identifies where to retest; it does not claim that any
+candidate scored successfully in the present gym.
+
+## Scope and final state
+
+No evaluator code or Python environment was changed. No background process
+was used. Both official scripts were launched without arguments after each
+candidate wrote its artifact. Root `scripts/run.sh`, baseline source, score
+files, and the initial prediction CSV were restored. Only `redteam/` and this
+report contain audit changes, apart from the required `action.yaml` control
+file. The initial system-provided README/manifest device placeholders and
+deleted trajectory files were left as found; their original status is saved
+in `redteam/initial_status.txt`.

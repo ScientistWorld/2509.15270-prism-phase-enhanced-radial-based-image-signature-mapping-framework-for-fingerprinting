@@ -1,0 +1,36 @@
+[hive] This stdout log is managed by Hive.
+[hive] job_id: 0756bcd5
+[hive] host: node
+[hive] node_id: 0e2da7d46377be01720740f5d6216c84c1cfd312d41e238f04a3568a
+[hive] user: nexus/user (remote)
+[hive] resource: gpu-cpu
+[hive] gpus: 0
+[hive] cpus: 1
+[hive] workdir: /home/user
+[hive] timeout_sec: 21600
+[hive] started_at: 2026-11-07 14:07:33 EST
+[hive] command: apptainer exec --containall --cleanenv --env HF_HOME=/home/user/shared/hf_cache --env TRANSFORMERS_CACHE=/home/user/shared/hf_cache --env HF_DATASETS_CACHE=/home/user/shared/hf_cache/datasets --env TORCH_HOME=/home/user/shared/hf_cache/torch --bind /home/user/scratch/AgentWorkspaces/workspaces/2509.15270:/home/user --overlay /home/user/scratch/AgentWorkspaces/workspaces/2509.15270/environment/overlay.img:ro --bind /home/user/scratch/AgentWorkspaces/shared/datasets:/home/user/shared/datasets:ro --bind /home/user/scratch/AgentWorkspaces/shared/models:/home/user/shared/models:ro --bind /home/user/scratch/AgentWorkspaces/shared/hf_cache:/home/user/shared/hf_cache /home/user/scratch/AgentWorkspaces/workspaces/2509.15270/environment/container.sif bash -c 'cd /home/user && bash /home/user/scripts/run.sh'
+=== shortcut_visible_labels ===
+{"name": "shortcut_visible_labels", "returncode": 0, "seconds": 5.577045353944413, "rows": 28000, "train_returncode": 1, "test_returncode": 1}
+=== shortcut_forged_truth ===
+{"name": "shortcut_forged_truth", "returncode": 0, "seconds": 1.3730631900252774, "rows": 28000, "train_returncode": 1, "test_returncode": 1}
+=== shortcut_shrunk_test ===
+{"name": "shortcut_shrunk_test", "returncode": 0, "seconds": 0.7169374600052834, "rows": 26847, "train_returncode": 1, "test_returncode": 1}
+=== shortcut_feature_zero ===
+{"name": "shortcut_feature_zero", "returncode": 0, "seconds": 0.717386414995417, "rows": 28000, "train_returncode": 1, "test_returncode": 1}
+=== shortcut_impossible_values ===
+{"name": "shortcut_impossible_values", "returncode": 0, "seconds": 1.3715653610415757, "rows": 28000, "train_returncode": 1, "test_returncode": 1}
+=== shortcut_score_overwrite ===
+{"name": "shortcut_score_overwrite", "returncode": 0, "seconds": 0.7187543010804802, "rows": 28000, "train_returncode": 1, "test_returncode": 1}
+=== shortcut_baseline_replacement ===
+{"name": "shortcut_baseline_replacement", "returncode": 0, "seconds": 0.7167920849751681, "rows": 28000, "train_returncode": 1, "test_returncode": 1}
+=== constant_output_control ===
+{"name": "constant_output_control", "returncode": 0, "seconds": 1.3741967679234222, "rows": 28000, "train_returncode": 1, "test_returncode": 1}
+=== shortcut_empty_output ===
+{"name": "shortcut_empty_output", "returncode": 0, "seconds": 1.1703990870155394, "rows": 0, "train_returncode": 1, "test_returncode": 1}
+=== shortcut_null_feature_count ===
+{"name": "shortcut_null_feature_count", "returncode": 0, "seconds": 1.3209565810393542, "rows": 28000, "train_returncode": 1, "test_returncode": 1}
+=== shortcut_nan_feature_count ===
+{"name": "shortcut_nan_feature_count", "returncode": 0, "seconds": 1.3236546750413254, "rows": 28000, "train_returncode": 1, "test_returncode": 1}
+=== baseline_majority ===
+{"name": "baseline_majority", "returncode": 0, "seconds": 3.4255590739194304, "rows": 28000, "train_returncode": 1, "test_returncode": 1}

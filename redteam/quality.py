@@ -129,4 +129,5 @@ if __name__ == '__main__':
     parser.add_argument('name')
     args = parser.parse_args()
     with threadpool_limits(limits=4):
-        run(args.name)
+        status = run(args.name)
+    sys.exit(status.get('test_returncode', 1) or status.get('train_returncode', 1))

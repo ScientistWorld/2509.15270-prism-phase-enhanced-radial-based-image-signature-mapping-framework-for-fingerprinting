@@ -1,0 +1,126 @@
+{
+  "jobs": [
+    "19f4ba87-cb1",
+    "69e72de7-5a9"
+  ],
+  "successful_hidden_test_runs": 0,
+  "runs": [
+    {
+      "name": "reference_cached",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "shortcut_visible_labels",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "shortcut_forged_truth",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "shortcut_shrunk_test",
+      "rows": 26847,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "shortcut_feature_zero",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "shortcut_impossible_values",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "shortcut_score_overwrite",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "shortcut_baseline_replacement",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "constant_output_control",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "shortcut_empty_output",
+      "rows": 0,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "shortcut_null_feature_count",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "shortcut_nan_feature_count",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    },
+    {
+      "name": "baseline_majority",
+      "rows": 28000,
+      "train_exit": 1,
+      "test_exit": 1,
+      "test_log_sha256": "70600bf724bc73928b8ea96058d5b260fccfd6f0efa72279d1e5f7d0eb918093",
+      "failure": "ModuleNotFoundError: No module named 'eval'",
+      "valid_test_score": false
+    }
+  ]
+}
