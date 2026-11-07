@@ -1,0 +1,33 @@
+{
+  "slice": "train",
+  "n_samples": 5600,
+  "experiments": {
+    "genimage_tiny_attribution": {
+      "results": {
+        "better_histgb": {
+          "accuracy": 88.19642857142857,
+          "balanced_accuracy": 82.12946428571428,
+          "precision_weighted": 88.00993863173807,
+          "f1_weighted": 88.0597691346553,
+          "f1_macro": 82.10886872910415,
+          "worst_class_recall": 51.74999999999999
+        }
+      }
+    },
+    "genimage_tiny_binary": {
+      "results": {
+        "better_histgb": {
+          "accuracy": 95.98214285714286,
+          "precision_weighted": 95.98383792463777,
+          "f1_weighted": 95.98210582999313,
+          "worst_class_recall": 95.67857142857143
+        }
+      }
+    }
+  },
+  "_failed_methods": {},
+  "_prediction_files": [
+    "/home/user/redteam/hardening/after/better_histgb/predictions.csv"
+  ],
+  "_skipped_files": []
+}

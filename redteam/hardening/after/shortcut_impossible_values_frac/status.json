@@ -1,0 +1,29 @@
+{
+  "name": "shortcut_impossible_values_frac",
+  "method": "shortcut_impossible_values_frac",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 0.0,
+    "attr_balanced_accuracy": 0.0,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 0.0,
+    "failed": true,
+    "failure": [
+      "missing predictions for 5600 of 5600 dev images",
+      "5600 predictions outside the integer label space 0..8"
+    ]
+  },
+  "test": {
+    "attr_accuracy": 0.0,
+    "attr_balanced_accuracy": 0.0,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 0.0,
+    "failed": true,
+    "failure": [
+      "missing predictions for 7000 of 7000 test images",
+      "7000 predictions outside the integer label space 0..8"
+    ]
+  },
+  "rank_delta": -267.5483176959691
+}

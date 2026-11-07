@@ -1,0 +1,27 @@
+{
+  "name": "probe_format_resolution_lookup",
+  "returncode": 0,
+  "prism": {
+    "genimage_tiny_attribution": {
+      "accuracy": 85.71428571428571,
+      "balanced_accuracy": 75.0,
+      "precision_weighted": 78.57142857142857,
+      "recall_weighted": 85.71428571428571,
+      "f1_weighted": 80.95238095238095,
+      "f1_macro": 66.66666666666666,
+      "worst_class_recall": 0.0,
+      "feature_count": 0.0
+    },
+    "genimage_tiny_binary": {
+      "accuracy": 100.0,
+      "balanced_accuracy": 100.0,
+      "precision_weighted": 100.0,
+      "recall_weighted": 100.0,
+      "f1_weighted": 100.0,
+      "f1_macro": 100.0,
+      "worst_class_recall": 100.0,
+      "feature_count": 0.0
+    }
+  },
+  "rank_delta": 52.26389479181963
+}

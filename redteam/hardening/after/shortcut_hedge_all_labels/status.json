@@ -1,0 +1,27 @@
+{
+  "name": "shortcut_hedge_all_labels",
+  "method": "shortcut_hedge_all_labels",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 0.0,
+    "attr_balanced_accuracy": 0.0,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 0.0,
+    "failed": true,
+    "failure": [
+      "44800 conflicting duplicate predictions"
+    ]
+  },
+  "test": {
+    "attr_accuracy": 0.0,
+    "attr_balanced_accuracy": 0.0,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 0.0,
+    "failed": true,
+    "failure": [
+      "56000 conflicting duplicate predictions"
+    ]
+  },
+  "rank_delta": -267.5483176959691
+}

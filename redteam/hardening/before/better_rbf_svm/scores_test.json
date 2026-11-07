@@ -1,0 +1,33 @@
+{
+  "slice": "test",
+  "experiments": {
+    "genimage_tiny_attribution": {
+      "results": {
+        "prism": {
+          "accuracy": 87.0,
+          "balanced_accuracy": 79.66071428571428,
+          "precision_weighted": 86.41522898805268,
+          "recall_weighted": 87.0,
+          "f1_weighted": 86.63740628058852,
+          "f1_macro": 80.57386714272513,
+          "worst_class_recall": 50.0,
+          "feature_count": 384.0
+        }
+      }
+    },
+    "genimage_tiny_binary": {
+      "results": {
+        "prism": {
+          "accuracy": 94.0,
+          "balanced_accuracy": 94.0,
+          "precision_weighted": 94.08646345179014,
+          "recall_weighted": 94.0,
+          "f1_weighted": 93.99705672015719,
+          "f1_macro": 93.99705672015718,
+          "worst_class_recall": 91.78571428571428,
+          "feature_count": 384.0
+        }
+      }
+    }
+  }
+}

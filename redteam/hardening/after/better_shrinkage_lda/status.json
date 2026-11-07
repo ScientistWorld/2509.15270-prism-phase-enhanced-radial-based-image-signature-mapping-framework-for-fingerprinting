@@ -20,7 +20,7 @@
     "failure": null
   },
   "rank_delta": -2.1169413561932697,
-  "seconds": 3.9,
+  "seconds": 1.1,
   "feature_count": 384,
   "before": {
     "name": "better_shrinkage_lda",

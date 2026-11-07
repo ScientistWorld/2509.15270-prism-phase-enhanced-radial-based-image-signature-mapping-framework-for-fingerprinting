@@ -1,0 +1,52 @@
+{
+  "name": "better_histgb",
+  "method": "better_histgb",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 88.19642857142857,
+    "attr_balanced_accuracy": 82.12946428571428,
+    "attr_worst_class_recall": 51.74999999999999,
+    "binary_accuracy": 95.98214285714286,
+    "failed": false,
+    "failure": null
+  },
+  "test": {
+    "attr_accuracy": 89.24285714285715,
+    "attr_balanced_accuracy": 83.16785714285714,
+    "attr_worst_class_recall": 54.800000000000004,
+    "binary_accuracy": 96.62857142857143,
+    "failed": false,
+    "failure": null
+  },
+  "rank_delta": 3.190259842393626,
+  "seconds": 167.2,
+  "feature_count": 384,
+  "before": {
+    "name": "better_histgb",
+    "returncode": 0,
+    "prism": {
+      "genimage_tiny_attribution": {
+        "accuracy": 88.96428571428571,
+        "balanced_accuracy": 82.66964285714286,
+        "precision_weighted": 88.73437784873637,
+        "recall_weighted": 88.96428571428572,
+        "f1_weighted": 88.81629563415802,
+        "f1_macro": 82.79974293704122,
+        "worst_class_recall": 53.5,
+        "feature_count": 384.0
+      },
+      "genimage_tiny_binary": {
+        "accuracy": 96.32142857142857,
+        "balanced_accuracy": 96.32142857142858,
+        "precision_weighted": 96.33620414673045,
+        "recall_weighted": 96.32142857142857,
+        "f1_weighted": 96.32113529458661,
+        "f1_macro": 96.32113529458661,
+        "worst_class_recall": 95.42857142857143,
+        "feature_count": 384.0
+      }
+    },
+    "rank_delta": 0.8983398423937317
+  }
+}

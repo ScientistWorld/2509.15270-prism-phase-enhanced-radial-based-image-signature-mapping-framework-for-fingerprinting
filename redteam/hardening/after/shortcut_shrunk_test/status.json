@@ -1,0 +1,26 @@
+{
+  "name": "shortcut_shrunk_test",
+  "method": "shortcut_shrunk_test",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 88.42857142857143,
+    "attr_balanced_accuracy": 82.29464285714286,
+    "attr_worst_class_recall": 56.75,
+    "binary_accuracy": 94.85714285714286,
+    "failed": false,
+    "failure": null
+  },
+  "test": {
+    "attr_accuracy": 0.0,
+    "attr_balanced_accuracy": 0.0,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 0.0,
+    "failed": true,
+    "failure": [
+      "missing predictions for 819 of 7000 test images"
+    ]
+  },
+  "rank_delta": -267.5483176959691,
+  "rows_kept": 11781
+}

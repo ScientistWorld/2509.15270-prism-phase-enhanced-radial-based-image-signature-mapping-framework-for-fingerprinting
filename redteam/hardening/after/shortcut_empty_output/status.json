@@ -1,0 +1,10 @@
+{
+  "name": "shortcut_empty_output",
+  "method": "shortcut_empty_output",
+  "train_rc": 1,
+  "test_rc": 1,
+  "train": {},
+  "test": {},
+  "rank_delta": null,
+  "test_error": "No prediction rows with columns ('method', 'sample_id', 'prediction') found in: ['/home/user/redteam/hardening/after/shortcut_empty_output/predictions.csv']"
+}

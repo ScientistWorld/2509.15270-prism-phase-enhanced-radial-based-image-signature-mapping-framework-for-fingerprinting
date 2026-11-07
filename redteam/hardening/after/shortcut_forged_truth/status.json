@@ -1,0 +1,23 @@
+{
+  "name": "shortcut_forged_truth",
+  "method": "shortcut_forged_truth",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 50.0,
+    "attr_balanced_accuracy": 12.5,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 50.0,
+    "failed": false,
+    "failure": null
+  },
+  "test": {
+    "attr_accuracy": 50.0,
+    "attr_balanced_accuracy": 12.5,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 50.0,
+    "failed": false,
+    "failure": null
+  },
+  "rank_delta": -179.13165102930245
+}

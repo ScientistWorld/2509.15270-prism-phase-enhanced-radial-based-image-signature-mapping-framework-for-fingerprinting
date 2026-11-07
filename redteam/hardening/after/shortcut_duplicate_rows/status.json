@@ -1,0 +1,23 @@
+{
+  "name": "shortcut_duplicate_rows",
+  "method": "shortcut_duplicate_rows",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 88.42857142857143,
+    "attr_balanced_accuracy": 82.29464285714286,
+    "attr_worst_class_recall": 56.75,
+    "binary_accuracy": 94.85714285714286,
+    "failed": false,
+    "failure": null
+  },
+  "test": {
+    "attr_accuracy": 88.3,
+    "attr_balanced_accuracy": 81.34642857142858,
+    "attr_worst_class_recall": 56.2,
+    "binary_accuracy": 95.22857142857143,
+    "failed": false,
+    "failure": null
+  },
+  "rank_delta": 0.0
+}

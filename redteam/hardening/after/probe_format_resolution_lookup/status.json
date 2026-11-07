@@ -1,0 +1,227 @@
+{
+  "name": "probe_format_resolution_lookup",
+  "method": "probe_format_resolution_lookup",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 85.69642857142857,
+    "attr_balanced_accuracy": 74.96875,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 100.0,
+    "failed": false,
+    "failure": null
+  },
+  "test": {
+    "attr_accuracy": 85.71428571428571,
+    "attr_balanced_accuracy": 75.0,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 100.0,
+    "failed": false,
+    "failure": null
+  },
+  "rank_delta": -24.76260341025485,
+  "before": {
+    "name": "probe_format_resolution_lookup",
+    "returncode": 0,
+    "prism": {
+      "genimage_tiny_attribution": {
+        "accuracy": 85.71428571428571,
+        "balanced_accuracy": 75.0,
+        "precision_weighted": 78.57142857142857,
+        "recall_weighted": 85.71428571428571,
+        "f1_weighted": 80.95238095238095,
+        "f1_macro": 66.66666666666666,
+        "worst_class_recall": 0.0,
+        "feature_count": 0.0
+      },
+      "genimage_tiny_binary": {
+        "accuracy": 100.0,
+        "balanced_accuracy": 100.0,
+        "precision_weighted": 100.0,
+        "recall_weighted": 100.0,
+        "f1_weighted": 100.0,
+        "f1_macro": 100.0,
+        "worst_class_recall": 100.0,
+        "feature_count": 0.0
+      }
+    },
+    "rank_delta": 52.26389479181963
+  },
+  "top_train_signatures": [
+    [
+      "JPEG",
+      "500",
+      "375",
+      "0",
+      3280
+    ],
+    [
+      "PNG",
+      "256",
+      "256",
+      "1",
+      2000
+    ],
+    [
+      "PNG",
+      "128",
+      "128",
+      "2",
+      2000
+    ],
+    [
+      "PNG",
+      "256",
+      "256",
+      "3",
+      2000
+    ],
+    [
+      "PNG",
+      "512",
+      "512",
+      "6",
+      2000
+    ],
+    [
+      "PNG",
+      "256",
+      "256",
+      "7",
+      2000
+    ],
+    [
+      "PNG",
+      "512",
+      "512",
+      "8",
+      2000
+    ],
+    [
+      "PNG",
+      "1024",
+      "1024",
+      "4",
+      1999
+    ],
+    [
+      "JPEG",
+      "500",
+      "333",
+      "0",
+      1313
+    ],
+    [
+      "JPEG",
+      "375",
+      "500",
+      "0",
+      986
+    ],
+    [
+      "JPEG",
+      "333",
+      "500",
+      "0",
+      445
+    ],
+    [
+      "JPEG",
+      "500",
+      "334",
+      "0",
+      339
+    ],
+    [
+      "JPEG",
+      "500",
+      "332",
+      "0",
+      205
+    ],
+    [
+      "JPEG",
+      "500",
+      "500",
+      "0",
+      140
+    ],
+    [
+      "JPEG",
+      "640",
+      "480",
+      "0",
+      124
+    ],
+    [
+      "JPEG",
+      "500",
+      "335",
+      "0",
+      104
+    ],
+    [
+      "JPEG",
+      "334",
+      "500",
+      "0",
+      96
+    ],
+    [
+      "JPEG",
+      "500",
+      "400",
+      "0",
+      81
+    ],
+    [
+      "JPEG",
+      "500",
+      "374",
+      "0",
+      81
+    ],
+    [
+      "JPEG",
+      "800",
+      "600",
+      "0",
+      65
+    ],
+    [
+      "JPEG",
+      "500",
+      "357",
+      "0",
+      60
+    ],
+    [
+      "JPEG",
+      "400",
+      "300",
+      "0",
+      59
+    ],
+    [
+      "JPEG",
+      "332",
+      "500",
+      "0",
+      51
+    ],
+    [
+      "JPEG",
+      "600",
+      "450",
+      "0",
+      48
+    ],
+    [
+      "JPEG",
+      "500",
+      "281",
+      "0",
+      43
+    ]
+  ]
+}
