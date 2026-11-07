@@ -1,0 +1,33 @@
+{
+  "slice": "test",
+  "n_samples": 7000,
+  "experiments": {
+    "genimage_tiny_attribution": {
+      "results": {
+        "probe_format_resolution_lookup": {
+          "accuracy": 28.571428571428573,
+          "balanced_accuracy": 50.0,
+          "precision_weighted": 13.970716829395954,
+          "f1_weighted": 17.05388963494075,
+          "f1_macro": 29.844306861146308,
+          "worst_class_recall": 0.0
+        }
+      }
+    },
+    "genimage_tiny_binary": {
+      "results": {
+        "probe_format_resolution_lookup": {
+          "accuracy": 50.0,
+          "precision_weighted": 25.0,
+          "f1_weighted": 33.33333333333333,
+          "worst_class_recall": 0.0
+        }
+      }
+    }
+  },
+  "_failed_methods": {},
+  "_prediction_files": [
+    "/home/user/redteam/hardening/after/probe_format_resolution_lookup/predictions.csv"
+  ],
+  "_skipped_files": []
+}

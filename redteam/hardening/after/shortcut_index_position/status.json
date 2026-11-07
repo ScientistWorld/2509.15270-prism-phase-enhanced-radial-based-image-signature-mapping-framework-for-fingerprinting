@@ -1,0 +1,23 @@
+{
+  "name": "shortcut_index_position",
+  "method": "shortcut_index_position",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 50.0,
+    "attr_balanced_accuracy": 12.5,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 50.0,
+    "failed": false,
+    "failure": null
+  },
+  "test": {
+    "attr_accuracy": 28.957142857142856,
+    "attr_balanced_accuracy": 12.682142857142855,
+    "attr_worst_class_recall": 5.4,
+    "binary_accuracy": 50.65714285714286,
+    "failed": false,
+    "failure": null
+  },
+  "rank_delta": -176.88029983882626
+}

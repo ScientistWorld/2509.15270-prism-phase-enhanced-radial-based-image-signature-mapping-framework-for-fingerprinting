@@ -3,4 +3,4 @@ action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Resume hardening check with thread pools pinned to 1 (previous attempt stalled in HistGB via OpenMP oversubscription). Reference features are cached; reruns reference scoring, then audit variants/shortcuts/seeds/bootstrap/pre-hardening replays."
+notes: "Final hardening check: re-export test inputs as lossless PNG of decoded pixels, full PRISM reference rerun from final code (fresh feature extraction), baseline, train/test scoring, audit incl. PNG feature-equality check, container/pixel-JPEG/resolution probes."

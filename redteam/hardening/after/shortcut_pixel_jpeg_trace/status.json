@@ -1,0 +1,25 @@
+{
+  "name": "shortcut_pixel_jpeg_trace",
+  "method": "shortcut_pixel_jpeg_trace",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 63.69642857142857,
+    "attr_balanced_accuracy": 44.10267857142857,
+    "attr_worst_class_recall": 3.0,
+    "binary_accuracy": 65.03571428571429,
+    "failed": false,
+    "failure": null
+  },
+  "test": {
+    "attr_accuracy": 62.15714285714286,
+    "attr_balanced_accuracy": 42.83928571428571,
+    "attr_worst_class_recall": 2.1999999999999997,
+    "binary_accuracy": 63.68571428571428,
+    "failed": false,
+    "failure": null
+  },
+  "rank_delta": -105.82841244046239,
+  "threshold": 0.987238883972168,
+  "calibration_accuracy": 0.641
+}

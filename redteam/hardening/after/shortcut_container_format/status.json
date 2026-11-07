@@ -1,0 +1,26 @@
+{
+  "name": "shortcut_container_format",
+  "method": "shortcut_container_format",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 92.25,
+    "attr_balanced_accuracy": 86.4375,
+    "attr_worst_class_recall": 59.5,
+    "binary_accuracy": 100.0,
+    "failed": false,
+    "failure": null
+  },
+  "test": {
+    "attr_accuracy": 41.84285714285714,
+    "attr_balanced_accuracy": 73.225,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 50.0,
+    "failed": false,
+    "failure": null
+  },
+  "rank_delta": -146.08090277369223,
+  "test_formats": {
+    "PNG": 7000
+  }
+}

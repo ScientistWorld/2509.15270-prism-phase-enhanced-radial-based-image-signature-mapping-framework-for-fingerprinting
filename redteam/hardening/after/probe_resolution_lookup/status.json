@@ -1,0 +1,23 @@
+{
+  "name": "probe_resolution_lookup",
+  "method": "probe_resolution_lookup",
+  "train_rc": 0,
+  "test_rc": 0,
+  "train": {
+    "attr_accuracy": 78.53571428571429,
+    "attr_balanced_accuracy": 62.464285714285715,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 99.98214285714286,
+    "failed": false,
+    "failure": null
+  },
+  "test": {
+    "attr_accuracy": 78.54285714285714,
+    "attr_balanced_accuracy": 62.49285714285715,
+    "attr_worst_class_recall": 0.0,
+    "binary_accuracy": 99.97142857142858,
+    "failed": false,
+    "failure": null
+  },
+  "rank_delta": -44.50775780331901
+}

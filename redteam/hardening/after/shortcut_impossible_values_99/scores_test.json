@@ -1,0 +1,38 @@
+{
+  "slice": "test",
+  "n_samples": 7000,
+  "experiments": {
+    "genimage_tiny_attribution": {
+      "results": {
+        "shortcut_impossible_values_99": {
+          "accuracy": 0.0,
+          "balanced_accuracy": 0.0,
+          "precision_weighted": 0.0,
+          "f1_weighted": 0.0,
+          "f1_macro": 0.0,
+          "worst_class_recall": 0.0
+        }
+      }
+    },
+    "genimage_tiny_binary": {
+      "results": {
+        "shortcut_impossible_values_99": {
+          "accuracy": 0.0,
+          "precision_weighted": 0.0,
+          "f1_weighted": 0.0,
+          "worst_class_recall": 0.0
+        }
+      }
+    }
+  },
+  "_failed_methods": {
+    "shortcut_impossible_values_99": [
+      "missing predictions for 7000 of 7000 test images",
+      "7000 predictions outside the integer label space 0..8"
+    ]
+  },
+  "_prediction_files": [
+    "/home/user/redteam/hardening/after/shortcut_impossible_values_99/predictions.csv"
+  ],
+  "_skipped_files": []
+}
